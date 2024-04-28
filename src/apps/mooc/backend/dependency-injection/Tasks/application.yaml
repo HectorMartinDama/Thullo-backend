@@ -1,0 +1,65 @@
+services:
+  Mooc.Tasks.domain.TaskRepository:
+    class: ../../../../../Contexts/Mooc/Tasks/infrastructure/persistence/MongoTaskRepository
+    arguments: ['@Mooc.Shared.ConnectionManager']
+
+  Mooc.Tasks.application.TaskCreator:
+    class: ../../../../../Contexts/Mooc/Tasks/application/Create/TaskCreator
+    arguments:
+      ['@Mooc.Tasks.domain.TaskRepository', '@Mooc.Boards.domain.BoardRepository', '@Mooc.Shared.domain.EventBus']
+
+  Mooc.Tasks.TasksByIdFinder:
+    class: ../../../../../Contexts/Mooc/Tasks/application/SearchById/TasksByIdFinder
+    arguments: ['@Mooc.Tasks.domain.TaskRepository']
+
+  Mooc.Tasks.SearchByIdTaskQueryHandler:
+    class: ../../../../../Contexts/Mooc/Tasks/application/SearchById/SearchByIdTaskQueryHandler
+    arguments: ['@Mooc.Tasks.TasksByIdFinder']
+    tags:
+      - { name: 'queryHandler' }
+
+  Mooc.tasks.CreateTaskCommandHandler:
+    class: ../../../../../Contexts/Mooc/Tasks/application/Create/CreateTaskCommandHandler
+    arguments: ['@Mooc.Tasks.application.TaskCreator']
+    tags:
+      - { name: 'commandHandler' }
+
+  Mooc.Tasks.application.TaskAdderCover:
+    class: ../../../../../Contexts/Mooc/Tasks/application/AddCover/TaskAdderCover
+    arguments: ['@Mooc.Tasks.domain.TaskRepository', '@Mooc.Shared.domain.EventBus']
+
+  Mooc.tasks.AddedCoverTaskCommandHandler:
+    class: ../../../../../Contexts/Mooc/Tasks/application/AddCover/AddedCoverTaskCommandHandler
+    arguments: ['@Mooc.Tasks.application.TaskAdderCover']
+    tags:
+      - { name: 'commandHandler' }
+
+  Mooc.Tasks.application.TaskAdderLabel:
+    class: ../../../../../Contexts/Mooc/Tasks/application/AddLabel/TaskAdderLabel
+    arguments: ['@Mooc.Tasks.domain.TaskRepository', '@Mooc.Shared.domain.EventBus']
+
+  Mooc.tasks.AddedLabelTaskCommandHandler:
+    class: ../../../../../Contexts/Mooc/Tasks/application/AddLabel/AddedLabelTaskCommandHandler
+    arguments: ['@Mooc.Tasks.application.TaskAdderLabel']
+    tags:
+      - { name: 'commandHandler' }
+
+  Mooc.Tasks.application.TaskAdderAttachment:
+    class: ../../../../../Contexts/Mooc/Tasks/application/AddAttachment/TaskAdderAttachment
+    arguments: ['@Mooc.Tasks.domain.TaskRepository', '@Mooc.Shared.domain.EventBus']
+
+  Mooc.tasks.AddedAttachmentCommandHandler:
+    class: ../../../../../Contexts/Mooc/Tasks/application/AddAttachment/AddedAttachmentCommandHandler
+    arguments: ['@Mooc.Tasks.application.TaskAdderAttachment']
+    tags:
+      - { name: 'commandHandler' }
+
+  Mooc.Tasks.application.TaskUpdatorPosition:
+    class: ../../../../../Contexts/Mooc/Tasks/application/UpdatePosition/TaskUpdatorPosition
+    arguments: ['@Mooc.Tasks.domain.TaskRepository', '@Mooc.Shared.domain.EventBus']
+
+  Mooc.tasks.UpdatePositionTaskCommandHandler:
+    class: ../../../../../Contexts/Mooc/Tasks/application/UpdatePosition/UpdatePositionTaskCommandHandler
+    arguments: ['@Mooc.Tasks.application.TaskUpdatorPosition']
+    tags:
+      - { name: 'commandHandler' }

@@ -21,19 +21,19 @@ const backofficeConfig = convict({
         doc: 'RabbitMQ username',
         format: String,
         env: 'RABBITMQ_USERNAME',
-        default: 'guest'
+        default: 'tfobjmui'
       },
       password: {
         doc: 'RabbitMQ password',
         format: String,
         env: 'RABBITMQ_PASSWORD',
-        default: 'guest'
+        default: 'MqPdAfHl3L5Y1kmNnol3UNoM9UDoglqC'
       },
       vhost: {
         doc: 'RabbitMQ virtual host',
         format: String,
         env: 'RABBITMQ_VHOST',
-        default: '/'
+        default: 'tfobjmui'
       },
       connection: {
         secure: {
@@ -46,7 +46,7 @@ const backofficeConfig = convict({
           doc: 'RabbitMQ hostname',
           format: String,
           env: 'RABBITMQ_HOSTNAME',
-          default: 'localhost'
+          default: 'amqps://tfobjmui:MqPdAfHl3L5Y1kmNnol3UNoM9UDoglqC@rat.rmq2.cloudamqp.com/tfobjmui'
         },
         port: {
           doc: 'RabbitMQ amqp port',

@@ -12,7 +12,8 @@ const moocConfig = convict({
       doc: 'The Mongo connection URL',
       format: String,
       env: 'MONGO_URL',
-      default: 'mongodb://localhost:27017/mooc-backend-dev'
+      default:
+        'mongodb+srv://HectorMartinDama:hector010702@cluster0.vvwj1.mongodb.net/ThulloTest?retryWrites=true&w=majority'
     }
   },
   typeorm: {

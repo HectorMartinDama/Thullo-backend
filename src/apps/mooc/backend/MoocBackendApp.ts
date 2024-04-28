@@ -2,13 +2,13 @@ import { EventBus } from '../../../Contexts/Shared/domain/EventBus';
 import container from './dependency-injection';
 import { DomainEventSubscribers } from '../../../Contexts/Shared/infrastructure/EventBus/DomainEventSubscribers';
 import { Server } from './server';
-import { RabbitMqConnection } from '../../../Contexts/Shared/infrastructure/EventBus/RabbitMQ/RabbitMqConnection';
+import { RabbitMqConnection } from '../../../Contexts/Shared/infrastructure/EventBus/RabbitMq/RabbitMqConnection';
 
 export class MoocBackendApp {
   server?: Server;
 
   async start() {
-    const port = process.env.PORT || '5001';
+    const port = process.env.PORT || '4000';
     this.server = new Server(port);
 
     await this.configureEventBus();

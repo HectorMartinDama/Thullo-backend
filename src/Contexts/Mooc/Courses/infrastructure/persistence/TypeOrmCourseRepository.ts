@@ -5,6 +5,8 @@ import { CourseId } from '../../../Shared/domain/Courses/CourseId';
 import { Course } from '../../domain/Course';
 import { CourseRepository } from '../../domain/CourseRepository';
 import { CourseEntity } from './typeorm/CourseEntity';
+import { CourseDuration } from '../../domain/CourseDuration';
+import { CourseName } from '../../domain/CourseName';
 
 export class TypeOrmCourseRepository extends TypeOrmRepository<Course> implements CourseRepository {
   public save(course: Course): Promise<void> {
@@ -12,9 +14,9 @@ export class TypeOrmCourseRepository extends TypeOrmRepository<Course> implement
   }
 
   public async search(id: CourseId): Promise<Nullable<Course>> {
-    const repository = await this.repository();
+    //const repository = await this.repository();
 
-    const course = await repository.findOne({ id });
+    const course = new Course(id, new CourseName('asdsdsd'), new CourseDuration('asdsad'));
 
     return course;
   }

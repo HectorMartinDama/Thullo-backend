@@ -1,0 +1,37 @@
+services:
+  Mooc.Lists.domain.ListRepository:
+    class: ../../../../../Contexts/Mooc/Lists/infrastructure/persistence/MongoListRepository
+    arguments: ['@Mooc.Shared.ConnectionManager']
+
+  Mooc.Lists.application.ListCreator:
+    class: ../../../../../Contexts/Mooc/Lists/application/Create/ListCreator
+    arguments:
+      ['@Mooc.Lists.domain.ListRepository', '@Mooc.Boards.domain.BoardRepository', '@Mooc.Shared.domain.EventBus']
+
+  Mooc.lists.CreateListCommandHandler:
+    class: ../../../../../Contexts/Mooc/Lists/application/Create/CreateListCommandHandler
+    arguments: ['@Mooc.Lists.application.ListCreator']
+    tags:
+      - { name: 'commandHandler' }
+
+  Mooc.Lists.application.ListEliminator:
+    class: ../../../../../Contexts/Mooc/Lists/application/Delete/ListEliminator
+    arguments:
+      ['@Mooc.Lists.domain.ListRepository', '@Mooc.Tasks.domain.TaskRepository', '@Mooc.Shared.domain.EventBus']
+
+  Mooc.lists.DeleteListCommandHandler:
+    class: ../../../../../Contexts/Mooc/Lists/application/Delete/DeleteListCommandHandler
+    arguments: ['@Mooc.Lists.application.ListEliminator']
+    tags:
+      - { name: 'commandHandler' }
+
+  Mooc.Lists.application.ListUpdator:
+    class: ../../../../../Contexts/Mooc/Lists/application/UpdateOrder/ListUpdator
+    arguments:
+      ['@Mooc.Lists.domain.ListRepository', '@Mooc.Boards.domain.BoardRepository', '@Mooc.Shared.domain.EventBus']
+
+  Mooc.lists.UpdateOrderListCommandHandler:
+    class: ../../../../../Contexts/Mooc/Lists/application/UpdateOrder/UpdateOrderListCommandHandler
+    arguments: ['@Mooc.Lists.application.ListUpdator']
+    tags:
+      - { name: 'commandHandler' }

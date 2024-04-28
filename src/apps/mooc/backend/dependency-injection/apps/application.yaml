@@ -10,3 +10,79 @@ services:
   Apps.mooc.controllers.CoursesCounterGetController:
     class: ../../controllers/CoursesCounterGetController
     arguments: ['@Mooc.Shared.domain.QueryBus']
+
+  Apps.mooc.controllers.UserPostController:
+    class: ../../controllers/UserPostController
+    arguments: ['@Mooc.Shared.domain.CommandBus']
+
+  Apps.mooc.controllers.UserLoginGetController:
+    class: ../../controllers/UserLoginGetController
+    arguments: ['@Mooc.Shared.domain.QueryBus']
+
+  Apps.mooc.controllers.UserDeleteController:
+    class: ../../controllers/UserDeleteController
+    arguments: ['@Mooc.Shared.domain.CommandBus']
+
+  Apps.mooc.controllers.BoardPutController:
+    class: ../../controllers/BoardPutController
+    arguments: ['@Mooc.Shared.domain.CommandBus']
+
+  Apps.mooc.controllers.BoardGetSearchAllController:
+    class: ../../controllers/BoardGetSearchAllController
+    arguments: ['@Mooc.Shared.domain.QueryBus']
+
+  Apps.mooc.controllers.BoardGetSearchByIdController:
+    class: ../../controllers/BoardGetSearchByIdController
+    arguments: ['@Mooc.Shared.domain.QueryBus']
+
+  Apps.mooc.controllers.BoardPatchAddMemberController:
+    class: ../../controllers/BoardPatchAddMemberController
+    arguments: ['@Mooc.Shared.domain.CommandBus']
+
+  Apps.mooc.controllers.BoardPatchChangeVisibilityController:
+    class: ../../controllers/BoardPatchChangeVisibilityController
+    arguments: ['@Mooc.Shared.domain.CommandBus']
+
+  Apps.mooc.controllers.BoardPatchChangeBackgroundController:
+    class: ../../controllers/BoardPatchChangeBackgroundController
+    arguments: ['@Mooc.Shared.domain.CommandBus']
+
+  Apps.mooc.controllers.BoardDeleteController:
+    class: ../../controllers/BoardDeleteController
+    arguments: ['@Mooc.Shared.domain.CommandBus']
+
+  Apps.mooc.controllers.ListPutController:
+    class: ../../controllers/ListPutController
+    arguments: ['@Mooc.Shared.domain.CommandBus']
+
+  Apps.mooc.controllers.ListDeleteController:
+    class: ../../controllers/ListDeleteController
+    arguments: ['@Mooc.Shared.domain.CommandBus']
+
+  Apps.mooc.controllers.ListPutUpdateOrderController:
+    class: ../../controllers/ListPutUpdateOrderController
+    arguments: ['@Mooc.Shared.domain.CommandBus']
+
+  Apps.mooc.controllers.TasksPutController:
+    class: ../../controllers/TaskPutController
+    arguments: ['@Mooc.Shared.domain.CommandBus']
+
+  Apps.mooc.controllers.TaskGetSearchByIdController:
+    class: ../../controllers/TaskGetSearchByIdController
+    arguments: ['@Mooc.Shared.domain.QueryBus']
+
+  Apps.mooc.controllers.TaskPatchAddCoverController:
+    class: ../../controllers/TaskPatchAddCoverController
+    arguments: ['@Mooc.Shared.domain.CommandBus']
+
+  Apps.mooc.controllers.TaskPatchAddLabelController:
+    class: ../../controllers/TaskPatchAddLabelController
+    arguments: ['@Mooc.Shared.domain.CommandBus']
+
+  Apps.mooc.controllers.TaskPatchAddAttachmentController:
+    class: ../../controllers/TaskPatchAddAttachmentController
+    arguments: ['@Mooc.Shared.domain.CommandBus']
+
+  Apps.mooc.controllers.TaskPutUpdatePositionController:
+    class: ../../controllers/TaskPutUpdatePositionController
+    arguments: ['@Mooc.Shared.domain.CommandBus']

@@ -28,20 +28,20 @@ services:
     arguments: ['mooc', '@Mooc.Shared.MongoConfig']
 
   Mooc.Shared.RabbitMQQueueFormatter:
-    class: ../../../../../Contexts/Shared/infrastructure/EventBus/RabbitMQ/RabbitMQqueueFormatter
+    class: ../../../../../Contexts/Shared/infrastructure/EventBus/RabbitMq/RabbitMQqueueFormatter
     arguments: ['mooc']
 
   Mooc.Shared.RabbitMQConnection:
-    class: ../../../../../Contexts/Shared/infrastructure/EventBus/RabbitMQ/RabbitMqConnection
+    class: ../../../../../Contexts/Shared/infrastructure/EventBus/RabbitMq/RabbitMqConnection
     arguments: ['@Mooc.Shared.RabbitMQConfig']
 
   Mooc.Shared.RabbitMQqueueFormatter:
-    class: ../../../../../Contexts/Shared/infrastructure/EventBus/RabbitMQ/RabbitMQqueueFormatter
+    class: ../../../../../Contexts/Shared/infrastructure/EventBus/RabbitMq/RabbitMQqueueFormatter
     arguments: ['mooc']
 
   Mooc.Shared.RabbitMQConfigurer:
-    class: ../../../../../Contexts/Shared/infrastructure/EventBus/RabbitMQ/RabbitMQConfigurer
-    arguments: ["@Mooc.Shared.RabbitMQConnection", "@Mooc.Shared.RabbitMQQueueFormatter"]
+    class: ../../../../../Contexts/Shared/infrastructure/EventBus/RabbitMq/RabbitMQConfigurer
+    arguments: ['@Mooc.Shared.RabbitMQConnection', '@Mooc.Shared.RabbitMQQueueFormatter']
 
   Mooc.Shared.DomainEventFailoverPublisher:
     class: ../../../../../Contexts/Shared/infrastructure/EventBus/DomainEventFailoverPublisher/DomainEventFailoverPublisher

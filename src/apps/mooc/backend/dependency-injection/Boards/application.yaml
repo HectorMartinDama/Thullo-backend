@@ -1,0 +1,81 @@
+services:
+  Mooc.Boards.domain.BoardRepository:
+    class: ../../../../../Contexts/Mooc/Boards/infrastructure/persistence/MongoBoardRepository
+    arguments: ['@Mooc.Shared.ConnectionManager']
+
+  Mooc.Boards.application.BoardCreator:
+    class: ../../../../../Contexts/Mooc/Boards/application/Create/BoardCreator
+    arguments: ['@Mooc.Boards.domain.BoardRepository', '@Mooc.Shared.domain.EventBus']
+
+  Mooc.Boards.BoardsFinder:
+    class: ../../../../../Contexts/Mooc/Boards/application/SearchAll/BoardsFinder
+    arguments: ['@Mooc.Boards.domain.BoardRepository']
+
+  Mooc.Boards.application.BoardEliminator:
+    class: ../../../../../Contexts/Mooc/Boards/application/Delete/BoardEliminator
+    arguments:
+      [
+        '@Mooc.Boards.domain.BoardRepository',
+        '@Mooc.Lists.domain.ListRepository',
+        '@Mooc.Tasks.domain.TaskRepository',
+        '@Mooc.Shared.domain.EventBus'
+      ]
+
+  Mooc.Boards.application.BoardAdderMember:
+    class: ../../../../../Contexts/Mooc/Boards/application/AddMember/BoardAdderMember
+    arguments:
+      ['@Mooc.Boards.domain.BoardRepository', '@Mooc.Users.domain.UserRepository', '@Mooc.Shared.domain.EventBus']
+
+  Mooc.Boards.application.BoardChangerVisibility:
+    class: ../../../../../Contexts/Mooc/Boards/application/ChangeVisibility/BoardChangerVisibility
+    arguments: ['@Mooc.Boards.domain.BoardRepository', '@Mooc.Shared.domain.EventBus']
+
+  Mooc.Boards.application.BoardChangerBackground:
+    class: ../../../../../Contexts/Mooc/Boards/application/ChangeBackground/BoardChangerBackground
+    arguments: ['@Mooc.Boards.domain.BoardRepository', '@Mooc.Shared.domain.EventBus']
+
+  Mooc.Boards.SearchAllBoardsQueryHandler:
+    class: ../../../../../Contexts/Mooc/Boards/application/SearchAll/SearchAllBoardsQueryHandler
+    arguments: ['@Mooc.Boards.BoardsFinder']
+    tags:
+      - { name: 'queryHandler' }
+
+  Mooc.Boards.BoardsByIdFinder:
+    class: ../../../../../Contexts/Mooc/Boards/application/SearchById/BoardsByIdFinder
+    arguments: ['@Mooc.Boards.domain.BoardRepository', '@Mooc.Lists.domain.ListRepository']
+
+  Mooc.Boards.SearchByIdBoardQueryHandler:
+    class: ../../../../../Contexts/Mooc/Boards/application/SearchById/SearchByIdBoardQueryHandler
+    arguments: ['@Mooc.Boards.BoardsByIdFinder']
+    tags:
+      - { name: 'queryHandler' }
+
+  Mooc.boards.CreateBoardCommandHandler:
+    class: ../../../../../Contexts/Mooc/Boards/application/Create/CreateBoardCommandHandler
+    arguments: ['@Mooc.Boards.application.BoardCreator']
+    tags:
+      - { name: 'commandHandler' }
+
+  Mooc.boards.AddMemberBoardCommandHandler:
+    class: ../../../../../Contexts/Mooc/Boards/application/AddMember/AddMemberBoardCommandHandler
+    arguments: ['@Mooc.Boards.application.BoardAdderMember']
+    tags:
+      - { name: 'commandHandler' }
+
+  Mooc.boards.ChangeVisibilityBoardCommandHandler:
+    class: ../../../../../Contexts/Mooc/Boards/application/ChangeVisibility/ChangeVisibilityBoardCommandHandler
+    arguments: ['@Mooc.Boards.application.BoardChangerVisibility']
+    tags:
+      - { name: 'commandHandler' }
+
+  Mooc.boards.ChangeBackgroundBoardCommandHandler:
+    class: ../../../../../Contexts/Mooc/Boards/application/ChangeBackground/ChangeBackgroundBoardCommandHandler
+    arguments: ['@Mooc.Boards.application.BoardChangerBackground']
+    tags:
+      - { name: 'commandHandler' }
+
+  Mooc.boards.DeleteBoardCommandHandler:
+    class: ../../../../../Contexts/Mooc/Boards/application/Delete/DeleteBoardCommandHandler
+    arguments: ['@Mooc.Boards.application.BoardEliminator']
+    tags:
+      - { name: 'commandHandler' }

@@ -6,6 +6,8 @@ import Router from 'express-promise-router';
 import helmet from 'helmet';
 import * as http from 'http';
 import httpStatus from 'http-status';
+import cookieParser from 'cookie-parser';
+import cors from 'cors';
 import { registerRoutes } from './routes';
 
 export class Server {
@@ -23,6 +25,8 @@ export class Server {
     this.express.use(helmet.hidePoweredBy());
     this.express.use(helmet.frameguard({ action: 'deny' }));
     this.express.use(compress());
+    this.express.use(cookieParser());
+    this.express.use(cors({ origin: 'http://localhost:5173' }));
     const router = Router();
     router.use(errorHandler());
     this.express.use(router);

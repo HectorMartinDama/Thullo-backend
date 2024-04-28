@@ -1,0 +1,41 @@
+services:
+  Mooc.Users.domain.UserRepository:
+    class: ../../../../../Contexts/Mooc/Users/infrastructure/persistence/MongoUserRepository
+    arguments: ['@Mooc.Shared.ConnectionManager']
+
+  Mooc.Users.application.UserCreator:
+    class: ../../../../../Contexts/Mooc/Users/application/UserCreator
+    arguments: ['@Mooc.Users.domain.UserRepository', '@Mooc.Shared.domain.EventBus']
+
+  Mooc.Users.UserFinder:
+    class: ../../../../../Contexts/Mooc/Users/application/Login/UserFinder
+    arguments: ['@Mooc.Users.domain.UserRepository']
+
+  Mooc.Users.application.UserEliminator:
+    class: ../../../../../Contexts/Mooc/Users/application/Delete/UserEliminator
+    arguments:
+      [
+        '@Mooc.Users.domain.UserRepository',
+        '@Mooc.Boards.domain.BoardRepository',
+        '@Mooc.Lists.domain.ListRepository',
+        '@Mooc.Tasks.domain.TaskRepository',
+        '@Mooc.Shared.domain.EventBus'
+      ]
+
+  Mooc.users.DeleteUserCommandHandler:
+    class: ../../../../../Contexts/Mooc/Users/application/Delete/DeleteUserCommandHandler
+    arguments: ['@Mooc.Users.application.UserEliminator']
+    tags:
+      - { name: 'commandHandler' }
+
+  Mooc.Users.FindUserQueryHandler:
+    class: ../../../../../Contexts/Mooc/Users/application/Login/FindUserQueryHandler
+    arguments: ['@Mooc.Users.UserFinder']
+    tags:
+      - { name: 'queryHandler' }
+
+  Mooc.users.CreateUserCommandHandler:
+    class: ../../../../../Contexts/Mooc/Users/application/CreateUserCommandHandler
+    arguments: ['@Mooc.Users.application.UserCreator']
+    tags:
+      - { name: 'commandHandler' }

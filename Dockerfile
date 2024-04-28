@@ -1,6 +1,19 @@
-FROM node:12.16.3-slim
+
+# primera etapa hacer el build de la app
+
+FROM node:20-slim
 
 WORKDIR /code
 
-COPY package.json package-lock.json ./
+COPY package*.json ./
+
 RUN npm install
+
+COPY . . 
+
+RUN npm run build
+
+COPY .env ./dist/
+
+EXPOSE 4000
+CMD ["npm", "run" ,"start:mooc:backend"]

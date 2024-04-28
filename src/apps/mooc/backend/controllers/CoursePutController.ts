@@ -19,7 +19,6 @@ export class CoursePutController implements Controller {
       const { id, name, duration } = req.body;
       const createCourseCommand = new CreateCourseCommand({ id, name, duration });
       await this.commandBus.dispatch(createCourseCommand);
-
       res.status(httpStatus.CREATED).send();
     } catch (error) {
       res.status(httpStatus.INTERNAL_SERVER_ERROR).send();
