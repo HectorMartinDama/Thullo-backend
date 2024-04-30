@@ -17,6 +17,7 @@
     "lint": "prettier --write src/**/*.ts{,x}",
     "test": "npm run test:unit && npm run test:features",
     "test:unit": "NODE_ENV=test jest",
+    "start": "NODE_ENV=production node dist/src/apps/mooc/backend/start",
     "start:mooc:backend": "NODE_ENV=production node dist/src/apps/mooc/backend/start",
     "start:backoffice:backend": "NODE_ENV=production node dist/src/apps/backoffice/backend/start",
     "test:features": "npm run test:mooc:backend:features",
