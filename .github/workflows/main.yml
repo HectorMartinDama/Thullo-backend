@@ -5,24 +5,40 @@ on:
       - main
 
 jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Checkout latest Repo
+        uses: actions/checkout@v4
+
+      - name: Build the Docker image
+        run: docker build . - tag ${{ steps.login-ecr.outputs.registry }}/admin:${{ env.PIPELINE_ID }} - tag ${{ steps.login-ecr.outputs.registry }}/admin:latest
+
+      - name: Push the Docker image to Amazon ECR
+        run: docker push - all-tags ${{ steps.login-ecr.outputs.registry }}/admin
+
   deploy:
+    needs: build
     runs-on: ubuntu-latest
     steps:
       - name: Checkout latest Repo
         uses: actions/checkout@v4
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-      - name: Install Dependencies
-        run: npm install
       - name: Generate Deployment Package
-        run: zip -r deploy.zip .
-
+        run: zip -r deploy.zip Dockerrun.aws.json
       - name: Get timestamp
         uses: gerred/actions/current-time@master
         id: current-time
-
       - name: Run string replace
         uses: frabert/replace-string-action@master
         id: format-time
@@ -31,7 +47,6 @@ jobs:
           string: '${{ steps.current-time.outputs.time }}'
           replace-with: '-'
           flags: 'g'
-
       - name: Deploy to EB
         uses: einaregilsson/beanstalk-deploy@v22
         with:
