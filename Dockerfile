@@ -11,7 +11,5 @@ COPY . .
 
 RUN npm run build
 
-COPY .env ./dist/
-
 EXPOSE 4000
 CMD ["npm", "run" ,"start:mooc:backend"]
