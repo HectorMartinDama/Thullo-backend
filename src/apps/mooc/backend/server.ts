@@ -26,7 +26,7 @@ export class Server {
     this.express.use(helmet.frameguard({ action: 'deny' }));
     this.express.use(compress());
     this.express.use(cookieParser());
-    this.express.use(cors({ origin: 'http://localhost:5173' }));
+    this.express.use(cors({ origin: 'https://thullo.pages.dev' }));
     const router = Router();
     router.use(errorHandler());
     this.express.use(router);
