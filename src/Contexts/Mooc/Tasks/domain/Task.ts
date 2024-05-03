@@ -76,13 +76,18 @@ export class Task extends AggregateRoot {
         plainData.labels || undefined,
         plainData.attachment || undefined
       );
-    } else if (plainData.labels) {
-      return new Task(new TaskId(plainData.id), new TaskTitle(plainData.title), undefined, plainData.labels);
-    } else if (plainData.cover) {
+    } else if (plainData.labels && plainData.cover) {
       return new Task(
         new TaskId(plainData.id),
         new TaskTitle(plainData.title),
         new TaskCover(plainData.cover),
+        plainData.labels
+      );
+    } else if (plainData.cover) {
+      return new Task(
+        new TaskId(plainData.id),
+        new TaskTitle(plainData.title),
+        new TaskCover(plainData.cover) || undefined,
         plainData.labels || undefined,
         plainData.attachment || undefined
       );
