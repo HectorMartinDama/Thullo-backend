@@ -52,12 +52,20 @@ export class MongoBoardRepository extends MongoRepository<Board> implements Boar
         }
       },
       {
+        $lookup: {
+          from: 'users',
+          localField: 'favourites',
+          foreignField: '_id',
+          as: 'favouritesDetails'
+        }
+      },
+      {
         $group: {
           _id: '$_id',
           title: { $first: '$title' },
           background: { $first: '$background' },
           visibility: { $first: '$visibility' },
-          favourites: { $first: '$favourites' },
+          favourites: { $first: '$favouritesDetails' },
           members: { $first: '$membersDetails' }
         }
       }
