@@ -21,6 +21,7 @@ export interface BoardDocument {
   user: UserDocument[];
   members: UserDocument[];
   lists: ListDocument[];
+  favourites: Array<string>;
 }
 
 export class MongoBoardRepository extends MongoRepository<Board> implements BoardRespository {
@@ -56,6 +57,7 @@ export class MongoBoardRepository extends MongoRepository<Board> implements Boar
           title: { $first: '$title' },
           background: { $first: '$background' },
           visibility: { $first: '$visibility' },
+          favourites: { $first: '$favourites' },
           members: { $first: '$membersDetails' }
         }
       }
@@ -68,6 +70,7 @@ export class MongoBoardRepository extends MongoRepository<Board> implements Boar
         title: board.title,
         background: board.background,
         visibility: board.visibility,
+        favourites: board.favourites,
         id: board._id,
         members: board.members.map(member =>
           User.fromPrimitives({ id: member._id, email: member.email, image: member.image, name: member.name })
@@ -135,6 +138,7 @@ export class MongoBoardRepository extends MongoRepository<Board> implements Boar
             description: { $first: '$description' },
             user: { $first: '$userDetails' },
             members: { $first: '$membersDetails' },
+            favourites: { $first: '$favourites' },
             lists: { $push: '$lists' }
           }
         }
@@ -189,6 +193,7 @@ export class MongoBoardRepository extends MongoRepository<Board> implements Boar
             background: { $first: '$background' },
             visibility: { $first: '$visibility' },
             description: { $first: '$description' },
+            favourites: { $first: '$favourites' },
             members: { $first: '$membersDetails' },
             user: { $first: '$userDetails' },
             lists: { $push: '$lists' }
@@ -211,6 +216,7 @@ export class MongoBoardRepository extends MongoRepository<Board> implements Boar
           background: boardCompleteTask[0].background,
           visibility: boardCompleteTask[0].visibility,
           description: boardCompleteTask[0].description,
+          favourites: boardCompleteTask[0].favourites,
           user: User.fromPrimitives({
             id: boardCompleteTask[0].user[0]._id,
             name: boardCompleteTask[0].user[0].name,
@@ -324,8 +330,24 @@ export class MongoBoardRepository extends MongoRepository<Board> implements Boar
 
   public async addMember(userId: UserId, boardId: BoardId, memberId: UserId): Promise<void> {
     const collection = await this.collection();
-    const filter = { _id: boardId.value, user: userId.value };
+    const filter = { _id: boardId.value, user: userId.value, members: { $nin: [userId.value] } };
     const updateBoard = { $push: { members: memberId } };
+    await collection.updateOne(filter, updateBoard);
+  }
+
+  public async addFavourite(userId: UserId, id: BoardId): Promise<void> {
+    const collection = await this.collection();
+
+    const filter = {
+      $and: [
+        { _id: id.value },
+        { favourites: { $nin: [userId.value] } },
+        {
+          $or: [{ user: userId.value }, { members: userId.value }]
+        }
+      ]
+    };
+    const updateBoard = { $push: { favourites: userId.value } };
     await collection.updateOne(filter, updateBoard);
   }
 

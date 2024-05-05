@@ -26,6 +26,10 @@ services:
     arguments:
       ['@Mooc.Boards.domain.BoardRepository', '@Mooc.Users.domain.UserRepository', '@Mooc.Shared.domain.EventBus']
 
+  Mooc.Boards.application.BoardAdderFavourite:
+    class: ../../../../../Contexts/Mooc/Boards/application/AddFavourite/BoardAdderFavourite
+    arguments: ['@Mooc.Boards.domain.BoardRepository', '@Mooc.Shared.domain.EventBus']
+
   Mooc.Boards.application.BoardChangerVisibility:
     class: ../../../../../Contexts/Mooc/Boards/application/ChangeVisibility/BoardChangerVisibility
     arguments: ['@Mooc.Boards.domain.BoardRepository', '@Mooc.Shared.domain.EventBus']
@@ -59,6 +63,12 @@ services:
   Mooc.boards.AddMemberBoardCommandHandler:
     class: ../../../../../Contexts/Mooc/Boards/application/AddMember/AddMemberBoardCommandHandler
     arguments: ['@Mooc.Boards.application.BoardAdderMember']
+    tags:
+      - { name: 'commandHandler' }
+
+  Mooc.boards.AddFavouriteCommandHandler:
+    class: ../../../../../Contexts/Mooc/Boards/application/AddFavourite/AddFavouriteCommandHandler
+    arguments: ['@Mooc.Boards.application.BoardAdderFavourite']
     tags:
       - { name: 'commandHandler' }
 

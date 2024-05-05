@@ -2,6 +2,7 @@ import { AggregateRoot } from '../../../Shared/domain/AggregateRoot';
 import { List } from '../../Lists/domain/List';
 import { User } from '../../Users/domain/User';
 import { UserId } from '../../Users/domain/types/UserId';
+import { BoardAddedFavouriteDomainEvent } from './BoardAddedFavouriteDomainEvent';
 import { BoardAddedMemberDomainEvent } from './BoardAddedMemberDomainEvent';
 import { BoardChangedBackgroundDomainEvent } from './BoardChangedBackgroundDomainEvent';
 import { BoardChangedVisibiltyDomainEvent } from './BoardChangedVisibiltyDomainEvent';
@@ -21,6 +22,7 @@ export class Board extends AggregateRoot {
   readonly members?: Array<User>;
   readonly lists?: Array<List>;
   readonly description?: string;
+  readonly favourites?: Array<string>;
 
   constructor(
     id: BoardId,
@@ -30,6 +32,7 @@ export class Board extends AggregateRoot {
     description?: string,
     user?: User,
     members?: Array<User>,
+    favourites?: Array<string>,
     lists?: Array<List>
   ) {
     super();
@@ -40,6 +43,7 @@ export class Board extends AggregateRoot {
     this.description = description;
     this.user = user;
     this.members = members;
+    this.favourites = favourites;
     this.lists = lists;
   }
 
@@ -71,6 +75,10 @@ export class Board extends AggregateRoot {
     this.record(new BoardAddedMemberDomainEvent({ aggregateId: this.id.value, memberId, memberEmail: email }));
   }
 
+  addFavourite(userId: UserId, id: BoardId) {
+    this.record(new BoardAddedFavouriteDomainEvent({ aggregateId: this.id.value, userId: userId.value, id: id.value }));
+  }
+
   changeVisibility(userId: UserId) {
     this.record(new BoardChangedVisibiltyDomainEvent({ aggregateId: this.id.value, userId: userId.value }));
   }
@@ -87,6 +95,7 @@ export class Board extends AggregateRoot {
     user?: User;
     members?: Array<User>;
     lists?: Array<List>;
+    favourites?: Array<string>;
     description?: string;
   }): Board {
     return new Board(
@@ -97,6 +106,7 @@ export class Board extends AggregateRoot {
       plainData.description,
       plainData.user,
       plainData.members || [],
+      plainData.favourites || [],
       plainData.lists || []
     );
   }
@@ -110,7 +120,8 @@ export class Board extends AggregateRoot {
       user: this.user?.toPrimitives(),
       members: this.members?.map(member => member.toPrimitives()),
       lists: this.lists?.map(list => list.toPrimitives()),
-      description: this.description
+      description: this.description,
+      favourites: this.favourites
     };
   }
 }

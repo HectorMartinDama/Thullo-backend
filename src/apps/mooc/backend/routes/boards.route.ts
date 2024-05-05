@@ -51,6 +51,14 @@ export const register = (router: Router) => {
     (req: Request, res: Response) => boardPatchAddMemberController.run(req, res)
   );
 
+  const boardPatchAddFavouriteController = container.get('Apps.mooc.controllers.BoardPatchAddFavouriteController');
+  router.patch(
+    '/boards/:id/addFavourite',
+    validateReqSchema,
+    AuthMiddleware.validateJWT,
+    (req: Request, res: Response) => boardPatchAddFavouriteController.run(req, res)
+  );
+
   const boardPatchChangeVisibilityController = container.get(
     'Apps.mooc.controllers.BoardPatchChangeVisibilityController'
   );
