@@ -121,6 +121,14 @@ export class MongoBoardRepository extends MongoRepository<Board> implements Boar
         {
           $lookup: {
             from: 'users',
+            localField: 'favourites',
+            foreignField: '_id',
+            as: 'favouritesDetails'
+          }
+        },
+        {
+          $lookup: {
+            from: 'users',
             localField: 'members.value', // Campo en la colección board
             foreignField: '_id', // Campo en la colección user
             as: 'membersDetails' // Nombre del nuevo campo con los datos de usuario
@@ -146,7 +154,7 @@ export class MongoBoardRepository extends MongoRepository<Board> implements Boar
             description: { $first: '$description' },
             user: { $first: '$userDetails' },
             members: { $first: '$membersDetails' },
-            favourites: { $first: '$favourites' },
+            favourites: { $first: '$favouritesDetails' },
             lists: { $push: '$lists' }
           }
         }
@@ -178,6 +186,14 @@ export class MongoBoardRepository extends MongoRepository<Board> implements Boar
         {
           $lookup: {
             from: 'users',
+            localField: 'favourites',
+            foreignField: '_id',
+            as: 'favouritesDetails'
+          }
+        },
+        {
+          $lookup: {
+            from: 'users',
             localField: 'members.value', // Campo en la colección board
             foreignField: '_id', // Campo en la colección user
             as: 'membersDetails' // Nombre del nuevo campo con los datos de usuario
@@ -201,7 +217,7 @@ export class MongoBoardRepository extends MongoRepository<Board> implements Boar
             background: { $first: '$background' },
             visibility: { $first: '$visibility' },
             description: { $first: '$description' },
-            favourites: { $first: '$favourites' },
+            favourites: { $first: '$favouritesDetails' },
             members: { $first: '$membersDetails' },
             user: { $first: '$userDetails' },
             lists: { $push: '$lists' }
