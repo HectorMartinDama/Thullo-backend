@@ -51,6 +51,10 @@ services:
     class: ../../controllers/BoardPatchChangeBackgroundController
     arguments: ['@Mooc.Shared.domain.CommandBus']
 
+  Apps.mooc.controllers.BoardPatchRenameController:
+    class: ../../controllers/BoardPatchRenameController
+    arguments: ['@Mooc.Shared.domain.CommandBus']
+
   Apps.mooc.controllers.BoardDeleteController:
     class: ../../controllers/BoardDeleteController
     arguments: ['@Mooc.Shared.domain.CommandBus']

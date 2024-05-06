@@ -9,6 +9,7 @@ import { BoardChangedVisibiltyDomainEvent } from './BoardChangedVisibiltyDomainE
 import { BoardCreatedDomainEvent } from './BoardCreatedDomainEvent';
 import { BaordDeletedDomainEvent } from './BoardDeletedDomainEvent';
 import { BoardRemovedFavouriteDomainEvent } from './BoardRemovedFavouriteDomainEvent';
+import { BoardRenamedBoardDomainEvent } from './BoardRenamedBoardDomainEvent';
 import { BoardBackground } from './types/BoardBackground';
 import { BoardId } from './types/BoardId';
 import { BoardTitle } from './types/BoardTitle';
@@ -88,6 +89,10 @@ export class Board extends AggregateRoot {
 
   changeVisibility(userId: UserId) {
     this.record(new BoardChangedVisibiltyDomainEvent({ aggregateId: this.id.value, userId: userId.value }));
+  }
+
+  renameTitle(userId: UserId, title: string) {
+    this.record(new BoardRenamedBoardDomainEvent({ aggregateId: this.id.value, userId: userId.value, title }));
   }
 
   changeBackground(userId: UserId) {

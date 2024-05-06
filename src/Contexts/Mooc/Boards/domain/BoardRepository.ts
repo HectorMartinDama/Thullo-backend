@@ -11,6 +11,7 @@ export interface BoardRespository {
   addMember(userId: UserId, id: BoardId, memberId: UserId): Promise<void>;
   addFavourite(userId: UserId, id: BoardId): Promise<void>;
   removeFavourite(userId: UserId, id: BoardId): Promise<void>;
+  rename(userId: UserId, id: BoardId, title: string): Promise<void>;
   searchAll(userId: UserId): Promise<Array<Board>>;
   searchByIdComplete(userId: UserId, boardId: BoardId): Promise<Nullable<Board>>; // with lists and taskss
   searchById(userId: UserId, boardId: BoardId): Promise<Nullable<Board>>;

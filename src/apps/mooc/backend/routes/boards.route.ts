@@ -20,6 +20,8 @@ export const register = (router: Router) => {
 
   const reqChangeBackgroundSchema = [body('background').exists().isString()];
 
+  const reqRenameTitleSchema = [body('title').exists().isString()];
+
   const boardsPutController = container.get('Apps.mooc.controllers.BoardPutController');
   router.put('/boards/:id', reqSchema, validateReqSchema, AuthMiddleware.validateJWT, (req: Request, res: Response) =>
     boardsPutController.run(req, res)
@@ -88,5 +90,14 @@ export const register = (router: Router) => {
     reqChangeBackgroundSchema,
     AuthMiddleware.validateJWT,
     (req: Request, res: Response) => boardPatchChangeBackgroundController.run(req, res)
+  );
+
+  const boardPatchRenameController = container.get('Apps.mooc.controllers.BoardPatchRenameController');
+  router.patch(
+    '/boards/rename/:id',
+    reqRenameTitleSchema,
+    validateReqSchema,
+    AuthMiddleware.validateJWT,
+    (req: Request, res: Response) => boardPatchRenameController.run(req, res)
   );
 };

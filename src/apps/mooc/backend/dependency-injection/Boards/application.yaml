@@ -42,6 +42,10 @@ services:
     class: ../../../../../Contexts/Mooc/Boards/application/ChangeBackground/BoardChangerBackground
     arguments: ['@Mooc.Boards.domain.BoardRepository', '@Mooc.Shared.domain.EventBus']
 
+  Mooc.Boards.application.BoardRenamerBoard:
+    class: ../../../../../Contexts/Mooc/Boards/application/Rename/BoardRenamerBoard
+    arguments: ['@Mooc.Boards.domain.BoardRepository', '@Mooc.Shared.domain.EventBus']
+
   Mooc.Boards.SearchAllBoardsQueryHandler:
     class: ../../../../../Contexts/Mooc/Boards/application/SearchAll/SearchAllBoardsQueryHandler
     arguments: ['@Mooc.Boards.BoardsFinder']
@@ -85,6 +89,12 @@ services:
   Mooc.boards.ChangeBackgroundBoardCommandHandler:
     class: ../../../../../Contexts/Mooc/Boards/application/ChangeBackground/ChangeBackgroundBoardCommandHandler
     arguments: ['@Mooc.Boards.application.BoardChangerBackground']
+    tags:
+      - { name: 'commandHandler' }
+
+  Mooc.boards.RenameBoardCommandHandler:
+    class: ../../../../../Contexts/Mooc/Boards/application/Rename/RenameBoardCommandHandler
+    arguments: ['@Mooc.Boards.application.BoardRenamerBoard']
     tags:
       - { name: 'commandHandler' }
 

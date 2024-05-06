@@ -392,6 +392,11 @@ export class MongoBoardRepository extends MongoRepository<Board> implements Boar
     );
   }
 
+  public async rename(userId: UserId, id: BoardId, title: string): Promise<void> {
+    const collection = await this.collection();
+    await collection.findOneAndUpdate({ _id: id.value, user: userId.value }, { $set: { title: title } });
+  }
+
   protected collectionName(): string {
     return 'boards';
   }
