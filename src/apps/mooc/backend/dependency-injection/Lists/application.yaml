@@ -35,3 +35,13 @@ services:
     arguments: ['@Mooc.Lists.application.ListUpdator']
     tags:
       - { name: 'commandHandler' }
+
+  Mooc.Lists.application.ListRenamerTitle:
+    class: ../../../../../Contexts/Mooc/Lists/application/Rename/ListRenamerTitle
+    arguments: ['@Mooc.Lists.domain.ListRepository', '@Mooc.Shared.domain.EventBus']
+
+  Mooc.lists.RenameTitleListCommandHandler:
+    class: ../../../../../Contexts/Mooc/Lists/application/Rename/RenameTitleListCommandHandler
+    arguments: ['@Mooc.Lists.application.ListRenamerTitle']
+    tags:
+      - { name: 'commandHandler' }

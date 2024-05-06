@@ -3,6 +3,7 @@ import { Task } from '../../Tasks/domain/Task';
 import { UserId } from '../../Users/domain/types/UserId';
 import { ListCreatedDomainEvent } from './ListCreatedDomainEvent';
 import { ListDeletedDomainEvent } from './ListDeletedDomainEvent';
+import { ListRenamedTitleDomainEvent } from './ListRenamedTitleDomainEvent';
 import { ListId } from './types/ListId';
 import { ListTitle } from './types/ListTitle';
 
@@ -26,6 +27,10 @@ export class List extends AggregateRoot {
 
   delete(userId: UserId) {
     this.record(new ListDeletedDomainEvent({ aggregateId: this.id.value, userId: userId.value }));
+  }
+
+  renameTitle(userId: UserId, title: string) {
+    this.record(new ListRenamedTitleDomainEvent({ aggregateId: this.id.value, userId: userId.value, title }));
   }
 
   static fromPrimitives(plainData: { id: string; title: string; tasks?: Array<Task> }): List {

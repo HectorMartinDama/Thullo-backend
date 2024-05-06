@@ -11,4 +11,5 @@ export interface ListRepository {
   save(userId: UserId, boardId: BoardId, list: List): Promise<void>;
   delete(userId: UserId, id: ListId): Promise<void>;
   updateOrder(listsId: Array<ListId>, boardId: BoardId): Promise<void>;
+  rename(userId: UserId, id: ListId, title: string): Promise<void>;
 }

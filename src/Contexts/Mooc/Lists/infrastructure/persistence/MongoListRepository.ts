@@ -99,6 +99,11 @@ export class MongoListRepository extends MongoRepository<List> implements ListRe
     );
   }
 
+  public async rename(userId: UserId, id: ListId, title: string): Promise<void> {
+    const collection = await this.collection();
+    await collection.findOneAndUpdate({ _id: id.value, user: userId.value }, { $set: { title: title } });
+  }
+
   protected collectionName(): string {
     return 'lists';
   }

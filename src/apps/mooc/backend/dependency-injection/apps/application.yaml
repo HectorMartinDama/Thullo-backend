@@ -75,6 +75,10 @@ services:
     class: ../../controllers/ListPutUpdateOrderController
     arguments: ['@Mooc.Shared.domain.CommandBus']
 
+  Apps.mooc.controllers.ListPatchRenameTitleController:
+    class: ../../controllers/ListPatchRenameTitleController
+    arguments: ['@Mooc.Shared.domain.CommandBus']
+
   Apps.mooc.controllers.TasksPutController:
     class: ../../controllers/TaskPutController
     arguments: ['@Mooc.Shared.domain.CommandBus']

@@ -9,6 +9,8 @@ export const register = (router: Router) => {
 
   const reqSchemaUpdateOrder = [body('listsId').exists().isArray()];
 
+  const reqSchemaRenameTitle = [body('title').exists().isString()];
+
   const listsPutController = container.get('Apps.mooc.controllers.ListPutController');
   router.put(
     '/lists/:boardId',
@@ -31,5 +33,14 @@ export const register = (router: Router) => {
   const listsDeleteController = container.get('Apps.mooc.controllers.ListDeleteController');
   router.delete('/lists/:id', AuthMiddleware.validateJWT, (req: Request, res: Response) =>
     listsDeleteController.run(req, res)
+  );
+
+  const listPatchRenameTitleController = container.get('Apps.mooc.controllers.ListPatchRenameTitleController');
+  router.patch(
+    '/lists/rename/:id',
+    reqSchemaRenameTitle,
+    validateReqSchema,
+    AuthMiddleware.validateJWT,
+    (req: Request, res: Response) => listPatchRenameTitleController.run(req, res)
   );
 };
