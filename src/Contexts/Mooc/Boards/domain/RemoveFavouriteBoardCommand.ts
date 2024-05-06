@@ -5,7 +5,7 @@ type Params = {
   userId: string;
 };
 
-export class AddFavouriteBoardCommand extends Command {
+export class RemoveFavouriteBoardCommand extends Command {
   id: string;
   userId: string;
 

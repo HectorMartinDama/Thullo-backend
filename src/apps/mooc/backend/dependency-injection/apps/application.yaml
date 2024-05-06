@@ -55,6 +55,10 @@ services:
     class: ../../controllers/BoardDeleteController
     arguments: ['@Mooc.Shared.domain.CommandBus']
 
+  Apps.mooc.controllers.BoardDeleteFavouriteController:
+    class: ../../controllers/BoardDeleteFavouriteController
+    arguments: ['@Mooc.Shared.domain.CommandBus']
+
   Apps.mooc.controllers.ListPutController:
     class: ../../controllers/ListPutController
     arguments: ['@Mooc.Shared.domain.CommandBus']

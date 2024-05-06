@@ -8,6 +8,7 @@ import { BoardChangedBackgroundDomainEvent } from './BoardChangedBackgroundDomai
 import { BoardChangedVisibiltyDomainEvent } from './BoardChangedVisibiltyDomainEvent';
 import { BoardCreatedDomainEvent } from './BoardCreatedDomainEvent';
 import { BaordDeletedDomainEvent } from './BoardDeletedDomainEvent';
+import { BoardRemovedFavouriteDomainEvent } from './BoardRemovedFavouriteDomainEvent';
 import { BoardBackground } from './types/BoardBackground';
 import { BoardId } from './types/BoardId';
 import { BoardTitle } from './types/BoardTitle';
@@ -77,6 +78,12 @@ export class Board extends AggregateRoot {
 
   addFavourite(userId: UserId, id: BoardId) {
     this.record(new BoardAddedFavouriteDomainEvent({ aggregateId: this.id.value, userId: userId.value, id: id.value }));
+  }
+
+  removeFavourite(userId: UserId, id: BoardId) {
+    this.record(
+      new BoardRemovedFavouriteDomainEvent({ aggregateId: this.id.value, userId: userId.value, id: id.value })
+    );
   }
 
   changeVisibility(userId: UserId) {

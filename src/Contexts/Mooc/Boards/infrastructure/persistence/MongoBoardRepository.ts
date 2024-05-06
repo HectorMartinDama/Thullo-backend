@@ -359,6 +359,11 @@ export class MongoBoardRepository extends MongoRepository<Board> implements Boar
     await collection.updateOne(filter, updateBoard);
   }
 
+  public async removeFavourite(userId: UserId, id: BoardId): Promise<void> {
+    const collection = await this.collection();
+    await collection.updateOne({ _id: id.value }, { $pull: { favourites: userId.value } });
+  }
+
   public async checkCanModify(userId: UserId, boardId: BoardId): Promise<Boolean> {
     const collection = await this.collection();
     const board = await collection.findOne<BoardDocument>({

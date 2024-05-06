@@ -30,6 +30,10 @@ services:
     class: ../../../../../Contexts/Mooc/Boards/application/AddFavourite/BoardAdderFavourite
     arguments: ['@Mooc.Boards.domain.BoardRepository', '@Mooc.Shared.domain.EventBus']
 
+  Mooc.Boards.application.BoardRemoverFavourite:
+    class: ../../../../../Contexts/Mooc/Boards/application/RemoveFavourite/BoardRemoverFavourite
+    arguments: ['@Mooc.Boards.domain.BoardRepository', '@Mooc.Shared.domain.EventBus']
+
   Mooc.Boards.application.BoardChangerVisibility:
     class: ../../../../../Contexts/Mooc/Boards/application/ChangeVisibility/BoardChangerVisibility
     arguments: ['@Mooc.Boards.domain.BoardRepository', '@Mooc.Shared.domain.EventBus']
@@ -87,5 +91,11 @@ services:
   Mooc.boards.DeleteBoardCommandHandler:
     class: ../../../../../Contexts/Mooc/Boards/application/Delete/DeleteBoardCommandHandler
     arguments: ['@Mooc.Boards.application.BoardEliminator']
+    tags:
+      - { name: 'commandHandler' }
+
+  Mooc.boards.RemoveFavouriteCommandHandler:
+    class: ../../../../../Contexts/Mooc/Boards/application/RemoveFavourite/RemoveFavouriteCommandHandler
+    arguments: ['@Mooc.Boards.application.BoardRemoverFavourite']
     tags:
       - { name: 'commandHandler' }

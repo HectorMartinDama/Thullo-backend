@@ -75,6 +75,11 @@ export const register = (router: Router) => {
     boardDeleteController.run(req, res)
   );
 
+  const boardDeleteFavouriteController = container.get('Apps.mooc.controllers.BoardDeleteFavouriteController');
+  router.delete('/boards/favourites/:id', AuthMiddleware.validateJWT, (req: Request, res: Response) =>
+    boardDeleteFavouriteController.run(req, res)
+  );
+
   const boardPatchChangeBackgroundController = container.get(
     'Apps.mooc.controllers.BoardPatchChangeBackgroundController'
   );
