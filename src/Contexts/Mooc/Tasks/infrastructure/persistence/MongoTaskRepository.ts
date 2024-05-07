@@ -83,6 +83,22 @@ export class MongoTaskRepository extends MongoRepository<Task> implements TaskRe
     console.log('tasks organizadas de ¡una vex', tasksOrganized, 'tasksIds', tasksId);
   }
 
+  public async getAttachments(userId: UserId, listId: ListId): Promise<Attachament[]> {
+    const collection = await this.collection();
+    let attachments: Array<Attachament> = [];
+
+    const tasks = await collection.find({ list: listId.value }).toArray();
+
+    if (tasks) {
+      tasks.map(task => {
+        if (task.attachments) {
+          attachments.push(...task.attachments);
+        }
+      });
+    }
+    return attachments;
+  }
+
   protected collectionName(): string {
     return 'tasks';
   }

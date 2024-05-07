@@ -2,6 +2,7 @@ import { Nullable } from '../../../Shared/domain/Nullable';
 import { ListId } from '../../Lists/domain/types/ListId';
 import { UserId } from '../../Users/domain/types/UserId';
 import { Task } from './Task';
+import { Attachament } from './types/TaskAttachment';
 import { TaskId } from './types/TaskId';
 
 export interface TaskRepository {
@@ -12,4 +13,5 @@ export interface TaskRepository {
   addAttachment(id: TaskId, userId: UserId, name: string, url: string, key: string): Promise<void>;
   updatePosition(tasksId: Array<TaskId>, userId: UserId, listId: ListId, id: TaskId): Promise<void>;
   deleteListTasks(userId: UserId, listId: ListId): Promise<void>;
+  getAttachments(userId: UserId, listsId: ListId): Promise<Nullable<Attachament[]>>;
 }

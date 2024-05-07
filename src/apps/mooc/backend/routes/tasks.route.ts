@@ -69,4 +69,11 @@ export const register = (router: Router) => {
     AuthMiddleware.validateJWT,
     (req: Request, res: Response) => tasksPutUpdatePositionController.run(req, res)
   );
+
+  const taskGetSearchAllAttachmentsController = container.get(
+    'Apps.mooc.controllers.TaskGetSearchAllAttachmentsController'
+  );
+  router.get('/tasks/allAttachments/:id', AuthMiddleware.validateJWT, (req: Request, res: Response) =>
+    taskGetSearchAllAttachmentsController.run(req, res)
+  );
 };

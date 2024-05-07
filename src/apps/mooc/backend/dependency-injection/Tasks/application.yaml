@@ -3,6 +3,10 @@ services:
     class: ../../../../../Contexts/Mooc/Tasks/infrastructure/persistence/MongoTaskRepository
     arguments: ['@Mooc.Shared.ConnectionManager']
 
+  Mooc.Tasks.domain.ListRepository:
+    class: ../../../../../Contexts/Mooc/Lists/infrastructure/persistence/MongoListRepository
+    arguments: ['@Mooc.Shared.ConnectionManager']
+
   Mooc.Tasks.application.TaskCreator:
     class: ../../../../../Contexts/Mooc/Tasks/application/Create/TaskCreator
     arguments:
@@ -11,6 +15,16 @@ services:
   Mooc.Tasks.TasksByIdFinder:
     class: ../../../../../Contexts/Mooc/Tasks/application/SearchById/TasksByIdFinder
     arguments: ['@Mooc.Tasks.domain.TaskRepository']
+
+  Mooc.Tasks.SearchAllAttachmentsFinder:
+    class: ../../../../../Contexts/Mooc/Tasks/application/SearchAllAttachments/SearchAllAttachmentsFinder
+    arguments: ['@Mooc.Tasks.domain.ListRepository', '@Mooc.Tasks.domain.TaskRepository']
+
+  Mooc.Tasks.SearchAllAttachmentsQueryHandler:
+    class: ../../../../../Contexts/Mooc/Tasks/application/SearchAllAttachments/SearchAllAttachmentsQueryHandler
+    arguments: ['@Mooc.Tasks.SearchAllAttachmentsFinder']
+    tags:
+      - { name: 'queryHandler' }
 
   Mooc.Tasks.SearchByIdTaskQueryHandler:
     class: ../../../../../Contexts/Mooc/Tasks/application/SearchById/SearchByIdTaskQueryHandler

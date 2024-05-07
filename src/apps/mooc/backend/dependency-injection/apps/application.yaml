@@ -102,3 +102,7 @@ services:
   Apps.mooc.controllers.TaskPutUpdatePositionController:
     class: ../../controllers/TaskPutUpdatePositionController
     arguments: ['@Mooc.Shared.domain.CommandBus']
+
+  Apps.mooc.controllers.TaskGetSearchAllAttachmentsController:
+    class: ../../controllers/TaskGetSearchAllAttachmentsController
+    arguments: ['@Mooc.Shared.domain.QueryBus']
