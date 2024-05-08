@@ -12,6 +12,8 @@ export const register = (router: Router) => {
     body('background').optional().isString()
   ];
 
+  const reqRenameTitleSchema = [body('title').exists().isString()];
+
   const reqAddDescriptionSchema = [body('description').exists().isString()];
 
   const reqAddCoverSchema = [body('cover').exists().isString()];
@@ -52,6 +54,15 @@ export const register = (router: Router) => {
     validateReqSchema,
     AuthMiddleware.validateJWT,
     (req: Request, res: Response) => tasksPatchAddLabelController.run(req, res)
+  );
+
+  const taskPatchRenameTitleController = container.get('Apps.mooc.controllers.TaskPatchRenameTitleController');
+  router.patch(
+    '/tasks/rename/:id',
+    reqRenameTitleSchema,
+    validateReqSchema,
+    AuthMiddleware.validateJWT,
+    (req: Request, res: Response) => taskPatchRenameTitleController.run(req, res)
   );
 
   const taskPatchAddAttachmentController = container.get('Apps.mooc.controllers.TaskPatchAddAttachmentController');

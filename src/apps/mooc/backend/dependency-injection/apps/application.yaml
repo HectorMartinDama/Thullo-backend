@@ -103,6 +103,10 @@ services:
     class: ../../controllers/TaskPatchAddAttachmentController
     arguments: ['@Mooc.Shared.domain.CommandBus']
 
+  Apps.mooc.controllers.TaskPatchRenameTitleController:
+    class: ../../controllers/TaskPatchRenameTitleController
+    arguments: ['@Mooc.Shared.domain.CommandBus']
+
   Apps.mooc.controllers.TaskPutUpdatePositionController:
     class: ../../controllers/TaskPutUpdatePositionController
     arguments: ['@Mooc.Shared.domain.CommandBus']

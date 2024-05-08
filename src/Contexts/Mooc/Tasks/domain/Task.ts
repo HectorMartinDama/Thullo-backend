@@ -12,6 +12,7 @@ import { TaskAddedAttachmentDomainEvent } from './TaskAddedAttachmentDomainEvent
 import { Attachament } from './types/TaskAttachment';
 import { TaskAddedDescriptionDomainEvent } from './TaskAddedDescriptionDomainEvent';
 import { TaskDescription } from './types/TaskDescription';
+import { TaskRenamedTitleDomainEvent } from './TaskRenamedTitleDomainEvent';
 
 export class Task extends AggregateRoot {
   readonly id: TaskId;
@@ -54,6 +55,10 @@ export class Task extends AggregateRoot {
 
   addLabel(title: string, color: string) {
     this.record(new TaskAddedLabelDomainEvent({ aggregateId: this.id.value, title: title, color: color }));
+  }
+
+  renameTitle(userId: UserId, title: string) {
+    this.record(new TaskRenamedTitleDomainEvent({ aggregateId: this.id.value, userId: userId.value, title }));
   }
 
   addAttachment(name: string, url: string, key: string) {

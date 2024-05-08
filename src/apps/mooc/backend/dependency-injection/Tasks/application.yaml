@@ -48,6 +48,16 @@ services:
     tags:
       - { name: 'commandHandler' }
 
+  Mooc.Tasks.application.TaskRenamerTitle:
+    class: ../../../../../Contexts/Mooc/Tasks/application/Rename/TaskRenamerTitle
+    arguments: ['@Mooc.Tasks.domain.TaskRepository', '@Mooc.Shared.domain.EventBus']
+
+  Mooc.tasks.RenameTitleTaskCommandHandler:
+    class: ../../../../../Contexts/Mooc/Tasks/application/Rename/RenameTitleTaskCommandHandler
+    arguments: ['@Mooc.Tasks.application.TaskRenamerTitle']
+    tags:
+      - { name: 'commandHandler' }
+
   Mooc.Tasks.application.TaskAdderCover:
     class: ../../../../../Contexts/Mooc/Tasks/application/AddCover/TaskAdderCover
     arguments: ['@Mooc.Tasks.domain.TaskRepository', '@Mooc.Shared.domain.EventBus']
