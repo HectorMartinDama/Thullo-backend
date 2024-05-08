@@ -38,6 +38,16 @@ services:
     tags:
       - { name: 'commandHandler' }
 
+  Mooc.Tasks.application.TaskAdderDescription:
+    class: ../../../../../Contexts/Mooc/Tasks/application/AddDescription/TaskAdderDescription
+    arguments: ['@Mooc.Tasks.domain.TaskRepository', '@Mooc.Shared.domain.EventBus']
+
+  Mooc.tasks.AddedDescriptionTaskCommandHandler:
+    class: ../../../../../Contexts/Mooc/Tasks/application/AddDescription/AddedDescriptionTaskCommandHandler
+    arguments: ['@Mooc.Tasks.application.TaskAdderDescription']
+    tags:
+      - { name: 'commandHandler' }
+
   Mooc.Tasks.application.TaskAdderCover:
     class: ../../../../../Contexts/Mooc/Tasks/application/AddCover/TaskAdderCover
     arguments: ['@Mooc.Tasks.domain.TaskRepository', '@Mooc.Shared.domain.EventBus']

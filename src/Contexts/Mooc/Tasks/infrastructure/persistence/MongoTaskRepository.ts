@@ -11,6 +11,7 @@ export interface TaskDocument {
   _id: string;
   title: string;
   cover?: string;
+  description?: string;
   labels?: Array<Object>;
   attachments?: Array<Attachament>;
 }
@@ -40,6 +41,13 @@ export class MongoTaskRepository extends MongoRepository<Task> implements TaskRe
   public async deleteListTasks(userId: UserId, listId: ListId): Promise<void> {
     const collection = await this.collection();
     await collection.deleteMany({ list: listId.value, user: userId.value });
+  }
+
+  public async addDescription(userId: UserId, id: TaskId, description: string): Promise<void> {
+    const collection = await this.collection();
+    const filter = { _id: id.value, user: userId.value };
+    const updateDocument = { $set: { description: description } };
+    await collection.updateOne(filter, updateDocument);
   }
 
   public async addCover(userId: UserId, id: TaskId, cover: string): Promise<void> {

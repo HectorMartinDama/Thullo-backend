@@ -258,6 +258,7 @@ export class MongoBoardRepository extends MongoRepository<Board> implements Boar
                 Task.fromPrimitives({
                   id: task._id,
                   title: task.title,
+                  description: task.description,
                   cover: task.cover,
                   labels: task.labels,
                   attachment: task.attachments

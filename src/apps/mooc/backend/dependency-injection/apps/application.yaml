@@ -87,6 +87,10 @@ services:
     class: ../../controllers/TaskGetSearchByIdController
     arguments: ['@Mooc.Shared.domain.QueryBus']
 
+  Apps.mooc.controllers.TaskPatchAddDescriptionController:
+    class: ../../controllers/TaskPatchAddDescriptionController
+    arguments: ['@Mooc.Shared.domain.CommandBus']
+
   Apps.mooc.controllers.TaskPatchAddCoverController:
     class: ../../controllers/TaskPatchAddCoverController
     arguments: ['@Mooc.Shared.domain.CommandBus']

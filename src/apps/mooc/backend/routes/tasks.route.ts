@@ -12,6 +12,8 @@ export const register = (router: Router) => {
     body('background').optional().isString()
   ];
 
+  const reqAddDescriptionSchema = [body('description').exists().isString()];
+
   const reqAddCoverSchema = [body('cover').exists().isString()];
 
   const reqAddLabelSchema = [body('title').exists().isString(), body('color').exists().isString()];
@@ -75,5 +77,14 @@ export const register = (router: Router) => {
   );
   router.get('/tasks/allAttachments/:id', AuthMiddleware.validateJWT, (req: Request, res: Response) =>
     taskGetSearchAllAttachmentsController.run(req, res)
+  );
+
+  const taskPatchAddDescriptionController = container.get('Apps.mooc.controllers.TaskPatchAddDescriptionController');
+  router.patch(
+    '/tasks/addDescription/:id',
+    reqAddDescriptionSchema,
+    validateReqSchema,
+    AuthMiddleware.validateJWT,
+    (req: Request, res: Response) => taskPatchAddDescriptionController.run(req, res)
   );
 };
