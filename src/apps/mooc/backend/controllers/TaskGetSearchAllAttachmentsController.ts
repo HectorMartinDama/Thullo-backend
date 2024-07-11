@@ -12,7 +12,7 @@ export class TaskGetSearchAllAttachmentsController implements Controller {
 
   async run(req: Request, res: Response) {
     try {
-      res.header('Access-Control-Allow-Origin', 'https://thullo.pages.dev');
+      res.header('Access-Control-Allow-Origin', 'https://thullo.app');
       const { payload } = req.body;
       const query = new SearchAllAttachmentsQuery(new BoardId(req.params.id), new UserId(payload.id.value));
       const attachments = await this.queryBus.ask<Attachament[]>(query);
