@@ -61,6 +61,7 @@ export abstract class MongoRepository<T extends AggregateRoot> {
 
     const document = {
       ...aggregateRoot.toPrimitives(),
+      createdAt: new Date(),
       list: listId.value,
       user: userId.value,
       id: undefined

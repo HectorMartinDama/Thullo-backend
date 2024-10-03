@@ -10,8 +10,9 @@ import { Attachament } from '../../domain/types/TaskAttachment';
 export interface TaskDocument {
   _id: string;
   title: string;
-  cover?: string;
   description?: string;
+  createdAt: Date;
+  cover?: string;
   labels?: Array<Object>;
   attachments?: Array<Attachament>;
 }
@@ -31,6 +32,7 @@ export class MongoTaskRepository extends MongoRepository<Task> implements TaskRe
       ? Task.fromPrimitives({
           id: document._id,
           title: document.title,
+          createdAt: document.createdAt,
           description: document.description,
           cover: document.cover,
           labels: document.labels,

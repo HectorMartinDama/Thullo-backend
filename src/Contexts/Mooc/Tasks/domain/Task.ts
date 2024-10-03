@@ -17,6 +17,7 @@ import { TaskRenamedTitleDomainEvent } from './TaskRenamedTitleDomainEvent';
 export class Task extends AggregateRoot {
   readonly id: TaskId;
   readonly title: TaskTitle;
+  readonly createdAt: Date;
   readonly description?: TaskDescription;
   readonly cover?: TaskCover;
   readonly labels?: Array<Object>;
@@ -25,6 +26,7 @@ export class Task extends AggregateRoot {
   constructor(
     id: TaskId,
     title: TaskTitle,
+    createdAt: Date,
     description?: TaskDescription,
     cover?: TaskCover,
     labels?: Array<Object>,
@@ -33,14 +35,15 @@ export class Task extends AggregateRoot {
     super();
     this.id = id;
     this.title = title;
+    this.createdAt = createdAt;
     this.description = description;
     this.cover = cover;
     this.labels = labels;
     this.attachments = attachments;
   }
 
-  static create(id: TaskId, title: TaskTitle): Task {
-    const task = new Task(id, title);
+  static create(id: TaskId, title: TaskTitle, createdAt: Date): Task {
+    const task = new Task(id, title, createdAt);
     task.record(new TaskCreatedDomainEvent({ aggregateId: task.id.value, title: task.title.value }));
     return task;
   }
@@ -78,19 +81,21 @@ export class Task extends AggregateRoot {
   static fromPrimitives(plainData: {
     id: string;
     title: string;
+    createdAt: Date;
     description?: string;
     cover?: string;
     labels?: Array<Object>;
     attachment?: Array<Attachament>;
   }): Task {
-    const { id, title, description, cover, labels, attachment } = plainData;
+    const { id, title, createdAt, description, cover, labels, attachment } = plainData;
 
     const taskId = new TaskId(id);
     const taskTitle = new TaskTitle(title);
+    const taskCreatedAt = createdAt;
     const taskDescription = description ? new TaskDescription(description) : undefined;
     const taskCover = cover ? new TaskCover(cover) : undefined;
 
-    return new Task(taskId, taskTitle, taskDescription, taskCover, labels, attachment);
+    return new Task(taskId, taskTitle, taskCreatedAt, taskDescription, taskCover, labels, attachment);
   }
 
   toPrimitives(): any {

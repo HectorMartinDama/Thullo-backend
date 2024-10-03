@@ -94,7 +94,9 @@ export class MongoListRepository extends MongoRepository<List> implements ListRe
       List.fromPrimitives({
         id: list._id,
         title: list.title,
-        tasks: list.tasks.map(task => Task.fromPrimitives({ id: task._id, title: task.title }))
+        tasks: list.tasks.map(task =>
+          Task.fromPrimitives({ id: task._id, title: task.title, createdAt: task.createdAt })
+        )
       })
     );
   }

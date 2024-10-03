@@ -19,7 +19,7 @@ export class TaskCreator {
   async run(params: { id: TaskId; title: TaskTitle; listId: ListId; boardId: BoardId; userId: UserId }): Promise<void> {
     const canModify = await this.boardRepository.checkCanModify(params.userId, params.boardId);
     if (!canModify) throw new BoardCannotModify();
-    const task = Task.create(params.id, params.title);
+    const task = Task.create(params.id, params.title, new Date());
     await this.repository.save(params.userId, params.listId, task);
     await this.eventBus.publish(task.pullDomainEvents());
   }
