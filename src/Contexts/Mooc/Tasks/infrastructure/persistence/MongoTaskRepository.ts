@@ -31,6 +31,7 @@ export class MongoTaskRepository extends MongoRepository<Task> implements TaskRe
       ? Task.fromPrimitives({
           id: document._id,
           title: document.title,
+          description: document.description,
           cover: document.cover,
           labels: document.labels,
           attachment: document.attachments
