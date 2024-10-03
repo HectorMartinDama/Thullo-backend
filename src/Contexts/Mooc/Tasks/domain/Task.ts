@@ -13,10 +13,12 @@ import { Attachament } from './types/TaskAttachment';
 import { TaskAddedDescriptionDomainEvent } from './TaskAddedDescriptionDomainEvent';
 import { TaskDescription } from './types/TaskDescription';
 import { TaskRenamedTitleDomainEvent } from './TaskRenamedTitleDomainEvent';
+import { TaskPriority } from './types/TaskPriority';
 
 export class Task extends AggregateRoot {
   readonly id: TaskId;
   readonly title: TaskTitle;
+  readonly priority: TaskPriority;
   readonly createdAt: Date;
   readonly description?: TaskDescription;
   readonly cover?: TaskCover;
@@ -26,6 +28,7 @@ export class Task extends AggregateRoot {
   constructor(
     id: TaskId,
     title: TaskTitle,
+    priority: TaskPriority,
     createdAt: Date,
     description?: TaskDescription,
     cover?: TaskCover,
@@ -35,6 +38,7 @@ export class Task extends AggregateRoot {
     super();
     this.id = id;
     this.title = title;
+    this.priority = priority;
     this.createdAt = createdAt;
     this.description = description;
     this.cover = cover;
@@ -42,8 +46,8 @@ export class Task extends AggregateRoot {
     this.attachments = attachments;
   }
 
-  static create(id: TaskId, title: TaskTitle, createdAt: Date): Task {
-    const task = new Task(id, title, createdAt);
+  static create(id: TaskId, title: TaskTitle): Task {
+    const task = new Task(id, title, 4, new Date());
     task.record(new TaskCreatedDomainEvent({ aggregateId: task.id.value, title: task.title.value }));
     return task;
   }
@@ -81,27 +85,30 @@ export class Task extends AggregateRoot {
   static fromPrimitives(plainData: {
     id: string;
     title: string;
+    priority: number;
     createdAt: Date;
     description?: string;
     cover?: string;
     labels?: Array<Object>;
     attachment?: Array<Attachament>;
   }): Task {
-    const { id, title, createdAt, description, cover, labels, attachment } = plainData;
+    const { id, title, priority, createdAt, description, cover, labels, attachment } = plainData;
 
     const taskId = new TaskId(id);
     const taskTitle = new TaskTitle(title);
+    const taskPriority = new TaskPriority(priority);
     const taskCreatedAt = createdAt;
     const taskDescription = description ? new TaskDescription(description) : undefined;
     const taskCover = cover ? new TaskCover(cover) : undefined;
 
-    return new Task(taskId, taskTitle, taskCreatedAt, taskDescription, taskCover, labels, attachment);
+    return new Task(taskId, taskTitle, taskPriority, taskCreatedAt, taskDescription, taskCover, labels, attachment);
   }
 
   toPrimitives(): any {
     return {
       id: this.id.value,
       title: this.title.value,
+      priority: this.priority,
       createdAt: this.createdAt,
       description: this.description?.value,
       cover: this.cover?.value,

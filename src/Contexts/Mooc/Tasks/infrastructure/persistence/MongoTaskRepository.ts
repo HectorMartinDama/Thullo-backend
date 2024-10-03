@@ -10,8 +10,10 @@ import { Attachament } from '../../domain/types/TaskAttachment';
 export interface TaskDocument {
   _id: string;
   title: string;
+  priority: number;
   description?: string;
   createdAt: Date;
+  dueDate?: Date;
   cover?: string;
   labels?: Array<Object>;
   attachments?: Array<Attachament>;
@@ -31,6 +33,7 @@ export class MongoTaskRepository extends MongoRepository<Task> implements TaskRe
           id: document._id,
           title: document.title,
           createdAt: document.createdAt,
+          priority: document.priority,
           description: document.description,
           cover: document.cover,
           labels: document.labels,

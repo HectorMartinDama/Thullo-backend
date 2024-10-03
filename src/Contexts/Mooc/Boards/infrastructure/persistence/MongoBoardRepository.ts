@@ -259,6 +259,7 @@ export class MongoBoardRepository extends MongoRepository<Board> implements Boar
                   id: task._id,
                   title: task.title,
                   description: task.description,
+                  priority: task.priority,
                   createdAt: task.createdAt,
                   cover: task.cover,
                   labels: task.labels,
