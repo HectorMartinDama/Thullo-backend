@@ -102,6 +102,7 @@ export class Task extends AggregateRoot {
     return {
       id: this.id.value,
       title: this.title.value,
+      createdAt: this.createdAt,
       description: this.description?.value,
       cover: this.cover?.value,
       labels: this.labels,

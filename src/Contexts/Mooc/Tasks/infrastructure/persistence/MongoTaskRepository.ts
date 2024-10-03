@@ -26,8 +26,6 @@ export class MongoTaskRepository extends MongoRepository<Task> implements TaskRe
     const collection = await this.collection();
     const document = await collection.findOne<TaskDocument>({ _id: id.value, user: userId.value });
 
-    console.log(document);
-
     return document
       ? Task.fromPrimitives({
           id: document._id,
