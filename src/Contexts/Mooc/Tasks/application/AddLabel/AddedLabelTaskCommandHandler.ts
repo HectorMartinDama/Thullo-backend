@@ -15,8 +15,7 @@ export class AddedLabelTaskCommandHandler implements CommandHandler<AddLabelTask
   async handle(command: AddLabelTaskCommand): Promise<void> {
     const id = new TaskId(command.id);
     const title = command.title;
-    const color = command.color;
     const userId = new UserId(command.userId);
-    await this.taskAdderLabel.run({ id, title, color, userId });
+    await this.taskAdderLabel.run({ id, title, userId });
   }
 }

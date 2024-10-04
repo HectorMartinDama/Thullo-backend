@@ -18,7 +18,7 @@ export const register = (router: Router) => {
 
   const reqAddCoverSchema = [body('cover').exists().isString()];
 
-  const reqAddLabelSchema = [body('title').exists().isString(), body('color').exists().isString()];
+  const reqAddLabelSchema = [body('title').exists().isString()];
 
   const reqAddAttachmentSchema = [body('url').exists().isString(), body('name').exists().isString()];
 

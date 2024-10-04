@@ -2,35 +2,30 @@ import { DomainEvent } from '../../../Shared/domain/DomainEvent';
 
 type TaskAddedLabelDomainEventAttributes = {
   readonly title: string;
-  readonly color: string;
 };
 
 export class TaskAddedLabelDomainEvent extends DomainEvent {
   static readonly EVENT_NAME = 'task.addedLabel';
   readonly title: string;
-  readonly color: string;
 
   constructor({
     aggregateId,
     title,
-    color,
     eventId,
     occurredOn
   }: {
     aggregateId: string;
     eventId?: string;
     title: string;
-    color: string;
     occurredOn?: Date;
   }) {
     super({ eventName: TaskAddedLabelDomainEvent.EVENT_NAME, aggregateId, eventId, occurredOn });
     this.title = title;
-    this.color = color;
   }
 
   toPrimitives(): TaskAddedLabelDomainEventAttributes {
-    const { title, color } = this;
-    return { title, color };
+    const { title } = this;
+    return { title };
   }
 
   static fromPrimitives(params: {
@@ -43,7 +38,6 @@ export class TaskAddedLabelDomainEvent extends DomainEvent {
     return new TaskAddedLabelDomainEvent({
       aggregateId,
       title: attributes.title,
-      color: attributes.color,
       eventId,
       occurredOn
     });

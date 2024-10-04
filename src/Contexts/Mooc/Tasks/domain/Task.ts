@@ -60,8 +60,8 @@ export class Task extends AggregateRoot {
     this.record(new TaskAddedCoverDomainEvent({ aggregateId: this.id.value, cover }));
   }
 
-  addLabel(title: string, color: string) {
-    this.record(new TaskAddedLabelDomainEvent({ aggregateId: this.id.value, title: title, color: color }));
+  addLabel(title: string) {
+    this.record(new TaskAddedLabelDomainEvent({ aggregateId: this.id.value, title: title }));
   }
 
   renameTitle(userId: UserId, title: string) {

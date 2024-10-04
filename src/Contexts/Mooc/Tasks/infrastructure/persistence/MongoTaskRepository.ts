@@ -61,10 +61,10 @@ export class MongoTaskRepository extends MongoRepository<Task> implements TaskRe
     await collection.updateOne(filter, updateDocument);
   }
 
-  public async addLabel(id: TaskId, userId: UserId, title: string, color: string): Promise<void> {
+  public async addLabel(id: TaskId, userId: UserId, title: string): Promise<void> {
     const collection = await this.collection();
     const filter = { _id: id.value, user: userId.value };
-    const document = { title, color };
+    const document = { title };
 
     const updateDocument = { $push: { labels: document } };
 

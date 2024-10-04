@@ -10,8 +10,8 @@ export class TaskPatchAddLabelController implements Controller {
   async run(req: Request, res: Response): Promise<void> {
     try {
       const id = req.params.id;
-      const { title, color, payload } = req.body;
-      const addLabelTaskCommand = new AddLabelTaskCommand({ id, title, color, userId: payload.id.value });
+      const { title, payload } = req.body;
+      const addLabelTaskCommand = new AddLabelTaskCommand({ id, title, userId: payload.id.value });
       await this.commandBus.dispatch(addLabelTaskCommand);
       res.status(httpStatus.CREATED).send();
     } catch (error) {
