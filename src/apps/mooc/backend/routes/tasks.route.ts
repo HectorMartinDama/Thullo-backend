@@ -98,4 +98,9 @@ export const register = (router: Router) => {
     AuthMiddleware.validateJWT,
     (req: Request, res: Response) => taskPatchAddDescriptionController.run(req, res)
   );
+
+  const taskDeleteLabelController = container.get('Apps.mooc.controllers.TaskDeleteLabelController');
+  router.delete('/tasks/:id/deleteLabel/:labelId', AuthMiddleware.validateJWT, (req: Request, res: Response) =>
+    taskDeleteLabelController.run(req, res)
+  );
 };

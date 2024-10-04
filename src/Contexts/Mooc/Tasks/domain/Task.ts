@@ -14,6 +14,7 @@ import { TaskAddedDescriptionDomainEvent } from './TaskAddedDescriptionDomainEve
 import { TaskDescription } from './types/TaskDescription';
 import { TaskRenamedTitleDomainEvent } from './TaskRenamedTitleDomainEvent';
 import { TaskPriority } from './types/TaskPriority';
+import { TaskRemovedLabelDomainEvent } from './TaskRemovedLabelDomainEvent';
 
 export class Task extends AggregateRoot {
   readonly id: TaskId;
@@ -62,6 +63,12 @@ export class Task extends AggregateRoot {
 
   addLabel(title: string) {
     this.record(new TaskAddedLabelDomainEvent({ aggregateId: this.id.value, title: title }));
+  }
+
+  removeLabel(userId: UserId, labelId: string) {
+    this.record(
+      new TaskRemovedLabelDomainEvent({ aggregateId: this.id.value, userId: userId.value, labelId: labelId })
+    );
   }
 
   renameTitle(userId: UserId, title: string) {

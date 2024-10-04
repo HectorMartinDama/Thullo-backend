@@ -6,6 +6,7 @@ import { ListId } from '../../../Lists/domain/types/ListId';
 import { TaskId } from '../../domain/types/TaskId';
 import { Nullable } from '../../../../Shared/domain/Nullable';
 import { Attachament } from '../../domain/types/TaskAttachment';
+import { Uuid } from '../../../../Shared/domain/value-object/Uuid';
 
 export interface TaskDocument {
   _id: string;
@@ -64,11 +65,14 @@ export class MongoTaskRepository extends MongoRepository<Task> implements TaskRe
   public async addLabel(id: TaskId, userId: UserId, title: string): Promise<void> {
     const collection = await this.collection();
     const filter = { _id: id.value, user: userId.value };
-    const document = { title };
-
+    const document = { title, _id: Uuid.random().value };
     const updateDocument = { $push: { labels: document } };
-
     await collection.updateOne(filter, updateDocument);
+  }
+
+  public async removeLabel(id: TaskId, labelId: string, userId: UserId): Promise<void> {
+    const collection = await this.collection();
+    await collection.updateOne({ _id: id.value, user: userId.value }, { $pull: { labels: { _id: labelId } } });
   }
 
   public async addAttachment(id: TaskId, userId: UserId, name: string, url: string, key: string): Promise<void> {

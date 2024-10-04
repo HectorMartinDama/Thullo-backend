@@ -11,7 +11,6 @@ export class BaordDeletedDomainEvent extends DomainEvent {
   constructor({
     aggregateId,
     userId,
-
     eventId,
     occurredOn
   }: {

@@ -68,6 +68,16 @@ services:
     tags:
       - { name: 'commandHandler' }
 
+  Mooc.Tasks.application.TaskRemoverLabel:
+    class: ../../../../../Contexts/Mooc/Tasks/application/RemoveLabel/TaskRemoverLabel
+    arguments: ['@Mooc.Tasks.domain.TaskRepository', '@Mooc.Shared.domain.EventBus']
+
+  Mooc.tasks.RemovedLabelTaskCommandHandler:
+    class: ../../../../../Contexts/Mooc/Tasks/application/RemoveLabel/RemovedLabelTaskCommandHandler
+    arguments: ['@Mooc.Tasks.application.TaskRemoverLabel']
+    tags:
+      - { name: 'commandHandler' }
+
   Mooc.Tasks.application.TaskAdderLabel:
     class: ../../../../../Contexts/Mooc/Tasks/application/AddLabel/TaskAdderLabel
     arguments: ['@Mooc.Tasks.domain.TaskRepository', '@Mooc.Shared.domain.EventBus']
