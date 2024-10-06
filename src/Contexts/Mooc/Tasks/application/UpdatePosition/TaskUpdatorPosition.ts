@@ -8,7 +8,7 @@ export class TaskUpdatorPosition {
   constructor(private repository: TaskRepository, private eventBus: EventBus) {}
 
   async run(params: { id: TaskId; listId: ListId; tasksId: Array<TaskId>; userId: UserId }): Promise<void> {
-    const task = await this.repository.search(params.id, params.userId);
+    const task = await this.repository.search(params.id);
     if (task) {
       task.updatePosition(params.listId, params.userId); // agrego el evento de dominio
       await this.repository.updatePosition(params.tasksId, params.userId, params.listId, params.id);

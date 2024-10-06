@@ -25,9 +25,9 @@ export class MongoTaskRepository extends MongoRepository<Task> implements TaskRe
     return this.registerTask(userId, listId, task);
   }
 
-  public async search(id: TaskId, userId: UserId): Promise<Nullable<Task>> {
+  public async search(id: TaskId): Promise<Nullable<Task>> {
     const collection = await this.collection();
-    const document = await collection.findOne<TaskDocument>({ _id: id.value, user: userId.value });
+    const document = await collection.findOne<TaskDocument>({ _id: id.value });
 
     return document
       ? Task.fromPrimitives({
@@ -123,6 +123,15 @@ export class MongoTaskRepository extends MongoRepository<Task> implements TaskRe
   public async changePriority(id: TaskId, priority: number, userId: UserId): Promise<void> {
     const collection = await this.collection();
     await collection.findOneAndUpdate({ _id: id.value, user: userId.value }, { $set: { priority: priority } });
+  }
+
+  public async duplicateTask(id: TaskId): Promise<void> {
+    const collection = await this.collection();
+    const task = await collection.findOne({ _id: id.value });
+    if (task) {
+      task._id = Uuid.random().value; // generar un nuevo id automaticamente
+      await collection.insertOne(task);
+    }
   }
 
   protected collectionName(): string {

@@ -7,7 +7,7 @@ export class TaskRenamerTitle {
   constructor(private repository: TaskRepository, private eventBus: EventBus) {}
 
   async run(params: { id: TaskId; userId: UserId; title: string }): Promise<void> {
-    const task = await this.repository.search(params.id, params.userId);
+    const task = await this.repository.search(params.id);
     if (task) {
       task.renameTitle(params.userId, params.title);
       await this.repository.rename(params.userId, params.id, params.title);

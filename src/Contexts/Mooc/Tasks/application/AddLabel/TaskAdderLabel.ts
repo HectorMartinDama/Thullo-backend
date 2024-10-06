@@ -7,7 +7,7 @@ export class TaskAdderLabel {
   constructor(private repository: TaskRepository, private eventBus: EventBus) {}
 
   async run(params: { id: TaskId; title: string; userId: UserId }): Promise<void> {
-    const task = await this.repository.search(params.id, params.userId);
+    const task = await this.repository.search(params.id);
     if (task) {
       task.addLabel(params.title);
       await this.repository.addLabel(params.id, params.userId, params.title);

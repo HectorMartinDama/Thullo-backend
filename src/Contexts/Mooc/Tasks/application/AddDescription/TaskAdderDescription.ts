@@ -7,7 +7,7 @@ export class TaskAdderDescription {
   constructor(private repository: TaskRepository, private eventBus: EventBus) {}
 
   async run(params: { userId: UserId; id: TaskId; description: string }): Promise<void> {
-    const task = await this.repository.search(params.id, params.userId);
+    const task = await this.repository.search(params.id);
     if (task) {
       task.addDescription(params.description);
       await this.repository.addDescription(params.userId, params.id, params.description);

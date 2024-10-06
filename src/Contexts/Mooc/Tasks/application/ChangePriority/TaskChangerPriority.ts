@@ -8,7 +8,7 @@ export class TaskChangerPriority {
   constructor(private repository: TaskRepository, private eventBus: EventBus) {}
 
   async run(params: { id: TaskId; userId: UserId; priority: number }): Promise<void> {
-    const task = await this.repository.search(params.id, params.userId);
+    const task = await this.repository.search(params.id);
     if (task) {
       task.changePriority(params.userId, params.priority);
       await this.repository.changePriority(params.id, params.priority, params.userId);

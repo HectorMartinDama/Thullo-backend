@@ -12,6 +12,11 @@ services:
     arguments:
       ['@Mooc.Tasks.domain.TaskRepository', '@Mooc.Boards.domain.BoardRepository', '@Mooc.Shared.domain.EventBus']
 
+  Mooc.Tasks.application.TaskDuplicator:
+    class: ../../../../../Contexts/Mooc/Tasks/application/DuplicateTask/TaskDuplicator
+    arguments:
+      ['@Mooc.Tasks.domain.TaskRepository', '@Mooc.Boards.domain.BoardRepository', '@Mooc.Shared.domain.EventBus']
+
   Mooc.Tasks.TasksByIdFinder:
     class: ../../../../../Contexts/Mooc/Tasks/application/SearchById/TasksByIdFinder
     arguments: ['@Mooc.Tasks.domain.TaskRepository']
@@ -75,6 +80,12 @@ services:
   Mooc.tasks.AddedCoverTaskCommandHandler:
     class: ../../../../../Contexts/Mooc/Tasks/application/AddCover/AddedCoverTaskCommandHandler
     arguments: ['@Mooc.Tasks.application.TaskAdderCover']
+    tags:
+      - { name: 'commandHandler' }
+
+  Mooc.tasks.DuplicateTaskCommandHandler:
+    class: ../../../../../Contexts/Mooc/Tasks/application/DuplicateTask/DuplicateTaskCommandHandler
+    arguments: ['@Mooc.Tasks.application.TaskDuplicator']
     tags:
       - { name: 'commandHandler' }
 

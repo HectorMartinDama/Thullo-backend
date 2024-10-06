@@ -7,7 +7,7 @@ export class TaskAdderCover {
   constructor(private repository: TaskRepository, private eventBus: EventBus) {}
 
   async run(params: { id: TaskId; cover: string; userId: UserId }): Promise<void> {
-    const task = await this.repository.search(params.id, params.userId);
+    const task = await this.repository.search(params.id);
 
     if (task) {
       task.addCover(params.cover);

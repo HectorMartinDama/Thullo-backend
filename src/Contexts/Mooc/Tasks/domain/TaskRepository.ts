@@ -7,7 +7,8 @@ import { TaskId } from './types/TaskId';
 
 export interface TaskRepository {
   save(userId: UserId, listId: ListId, task: Task): Promise<void>;
-  search(id: TaskId, userId: UserId): Promise<Nullable<Task>>;
+  search(id: TaskId): Promise<Nullable<Task>>;
+  duplicateTask(id: TaskId): Promise<void>;
   rename(userId: UserId, id: TaskId, title: string): Promise<void>;
   addDescription(userId: UserId, id: TaskId, description: string): Promise<void>;
   addCover(userId: UserId, id: TaskId, cover: string): Promise<void>;
