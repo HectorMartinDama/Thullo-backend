@@ -120,6 +120,11 @@ export class MongoTaskRepository extends MongoRepository<Task> implements TaskRe
     await collection.findOneAndUpdate({ _id: id.value, user: userId.value }, { $set: { title: title } });
   }
 
+  public async changePriority(id: TaskId, priority: number, userId: UserId): Promise<void> {
+    const collection = await this.collection();
+    await collection.findOneAndUpdate({ _id: id.value, user: userId.value }, { $set: { priority: priority } });
+  }
+
   protected collectionName(): string {
     return 'tasks';
   }

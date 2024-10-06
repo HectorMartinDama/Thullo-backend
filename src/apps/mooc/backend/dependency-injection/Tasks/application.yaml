@@ -52,6 +52,16 @@ services:
     class: ../../../../../Contexts/Mooc/Tasks/application/Rename/TaskRenamerTitle
     arguments: ['@Mooc.Tasks.domain.TaskRepository', '@Mooc.Shared.domain.EventBus']
 
+  Mooc.Tasks.application.TaskChangerPriority:
+    class: ../../../../../Contexts/Mooc/Tasks/application/ChangePriority/TaskChangerPriority
+    arguments: ['@Mooc.Tasks.domain.TaskRepository', '@Mooc.Shared.domain.EventBus']
+
+  Mooc.tasks.ChangePriorityTaskCommandHandler:
+    class: ../../../../../Contexts/Mooc/Tasks/application/ChangePriority/ChangePriorityTaskCommandHandler
+    arguments: ['@Mooc.Tasks.application.TaskChangerPriority']
+    tags:
+      - { name: 'commandHandler' }
+
   Mooc.tasks.RenameTitleTaskCommandHandler:
     class: ../../../../../Contexts/Mooc/Tasks/application/Rename/RenameTitleTaskCommandHandler
     arguments: ['@Mooc.Tasks.application.TaskRenamerTitle']

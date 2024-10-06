@@ -24,6 +24,10 @@ export const register = (router: Router) => {
 
   const reqUpdatePositionSchema = [body('tasksId').exists().isArray()];
 
+  const reqChangePrioritySchema = [
+    body('priority').exists().isInt({ min: 1, max: 4 }).withMessage('Priority must be between 1 and 5')
+  ];
+
   const tasksPutController = container.get('Apps.mooc.controllers.TasksPutController');
   router.put(
     '/tasks/:boardId/:listId',
@@ -97,6 +101,15 @@ export const register = (router: Router) => {
     validateReqSchema,
     AuthMiddleware.validateJWT,
     (req: Request, res: Response) => taskPatchAddDescriptionController.run(req, res)
+  );
+
+  const taskPatchChangePriorityController = container.get('Apps.mooc.controllers.TaskPatchChangePriorityController');
+  router.patch(
+    '/tasks/:id/changePriority',
+    reqChangePrioritySchema,
+    validateReqSchema,
+    AuthMiddleware.validateJWT,
+    (req: Request, res: Response) => taskPatchChangePriorityController.run(req, res)
   );
 
   const taskDeleteLabelController = container.get('Apps.mooc.controllers.TaskDeleteLabelController');
