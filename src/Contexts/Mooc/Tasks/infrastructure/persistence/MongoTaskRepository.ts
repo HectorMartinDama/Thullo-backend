@@ -134,6 +134,11 @@ export class MongoTaskRepository extends MongoRepository<Task> implements TaskRe
     }
   }
 
+  public async deleteTask(id: TaskId): Promise<void> {
+    const collection = await this.collection();
+    await collection.deleteOne({ _id: id.value });
+  }
+
   protected collectionName(): string {
     return 'tasks';
   }

@@ -83,6 +83,10 @@ services:
     class: ../../controllers/TaskPutController
     arguments: ['@Mooc.Shared.domain.CommandBus']
 
+  Apps.mooc.controllers.TaskDeleteController:
+    class: ../../controllers/TaskDeleteController
+    arguments: ['@Mooc.Shared.domain.CommandBus']
+
   Apps.mooc.controllers.TaskGetSearchByIdController:
     class: ../../controllers/TaskGetSearchByIdController
     arguments: ['@Mooc.Shared.domain.QueryBus']

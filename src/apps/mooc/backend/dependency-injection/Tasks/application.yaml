@@ -12,6 +12,17 @@ services:
     arguments:
       ['@Mooc.Tasks.domain.TaskRepository', '@Mooc.Boards.domain.BoardRepository', '@Mooc.Shared.domain.EventBus']
 
+  Mooc.Tasks.application.TaskEliminator:
+    class: ../../../../../Contexts/Mooc/Tasks/application/Delete/TaskEliminator
+    arguments:
+      ['@Mooc.Boards.domain.BoardRepository', '@Mooc.Tasks.domain.TaskRepository', '@Mooc.Shared.domain.EventBus']
+
+  Mooc.Tasks.DeleteTaskCommandHandler:
+    class: ../../../../../Contexts/Mooc/Tasks/application/Delete/DeleteTaskCommandHandler
+    arguments: ['@Mooc.Tasks.application.TaskEliminator']
+    tags:
+      - { name: 'commandHandler' }
+
   Mooc.Tasks.application.TaskDuplicator:
     class: ../../../../../Contexts/Mooc/Tasks/application/DuplicateTask/TaskDuplicator
     arguments:

@@ -16,6 +16,7 @@ import { TaskRenamedTitleDomainEvent } from './TaskRenamedTitleDomainEvent';
 import { TaskPriority } from './types/TaskPriority';
 import { TaskRemovedLabelDomainEvent } from './TaskRemovedLabelDomainEvent';
 import { TaskChangedPriorityDomainEvent } from './TaskChangedPriorityDomainEvent';
+import { TaskDeletedDomainEvent } from './TaskDeletedDomainEvent';
 
 export class Task extends AggregateRoot {
   readonly id: TaskId;
@@ -52,6 +53,10 @@ export class Task extends AggregateRoot {
     const task = new Task(id, title, 4, new Date());
     task.record(new TaskCreatedDomainEvent({ aggregateId: task.id.value, title: task.title.value }));
     return task;
+  }
+
+  delete(userId: UserId) {
+    this.record(new TaskDeletedDomainEvent({ aggregateId: this.id.value, userId: userId.value }));
   }
 
   addDescription(description: string) {

@@ -121,4 +121,9 @@ export const register = (router: Router) => {
   router.post('/:boardId/tasks/duplicate/:id', AuthMiddleware.validateJWT, (req: Request, res: Response) =>
     taskDuplicateTaskController.run(req, res)
   );
+
+  const taskDeleteController = container.get('Apps.mooc.controllers.TaskDeleteController');
+  router.delete('/:boardId/tasks/:id', AuthMiddleware.validateJWT, (req: Request, res: Response) =>
+    taskDeleteController.run(req, res)
+  );
 };
