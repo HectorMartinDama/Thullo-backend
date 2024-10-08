@@ -26,6 +26,7 @@ phases:
       - echo $DOCKER_CONTAINER_NAME
       - echo Printing imagedefinitions.json file...
       - cat imagedefinitions.json
-  artifacts:
-    files:
-      - imagedefinitions.json
+
+artifacts:
+  files:
+    - imagedefinitions.json
