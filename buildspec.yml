@@ -28,7 +28,7 @@ phases:
       - echo Printing imagedefinitions.json file...
       - cat imagedefinitions.json
 
-# esto es un comentario
+# this is a comment
 artifacts:
   files:
     - imagedefinitions.json
