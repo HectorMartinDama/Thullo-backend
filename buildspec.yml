@@ -1,6 +1,16 @@
 version: 0.2
 
 phases:
+  install:
+    commands:
+      - |
+        if ! docker buildx version; then
+          echo "Instalando buildx..."
+          mkdir -p ~/.docker/cli-plugins
+          curl -SL https://github.com/docker/buildx/releases/latest/download/buildx-Linux-x86_64 -o ~/.docker/cli-plugins/docker-buildx
+          chmod +x ~/.docker/cli-plugins/docker-buildx
+        fi
+
   pre_build:
     commands:
       - echo Logging in to Amazon ECR...
