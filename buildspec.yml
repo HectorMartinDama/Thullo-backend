@@ -30,9 +30,9 @@ phases:
       - docker push $REPOSITORY_URI:latest
       - docker push $REPOSITORY_URI:$IMAGE_TAG
       - echo Writing image definitions file...
-      - DOCKER_CONTAINER_NAME=api-thullo-image-amd64
+      - DOCKER_CONTAINER_NAME=ThulloImage
       - printf '[{"name":"%s","imageUri":"%s"}]' "$DOCKER_CONTAINER_NAME" "$REPOSITORY_URI:$IMAGE_TAG" > imagedefinitions.json
-      - DOCKER_CONTAINER_NAME=api-thullo-image-amd64
+      - DOCKER_CONTAINER_NAME=ThulloImage
       - echo $DOCKER_CONTAINER_NAME
       - echo Printing imagedefinitions.json file...
       - cat imagedefinitions.json
