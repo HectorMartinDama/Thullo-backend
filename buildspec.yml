@@ -10,7 +10,6 @@ phases:
           curl -SL https://github.com/docker/buildx/releases/latest/download/buildx-Linux-x86_64 -o ~/.docker/cli-plugins/docker-buildx
           chmod +x ~/.docker/cli-plugins/docker-buildx
         fi
-
   pre_build:
     commands:
       - echo Logging in to Amazon ECR...
@@ -22,7 +21,7 @@ phases:
     commands:
       - echo Build started on `date`
       - echo Building the Docker image...
-      - docker buildx build --platform linux/amd64 -t api-thullo-image-amd64 .
+      - docker buildx build --platform linux/amd64 -t $REPOSITORY_URI:latest .
       - docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$IMAGE_TAG
   post_build:
     commands:
