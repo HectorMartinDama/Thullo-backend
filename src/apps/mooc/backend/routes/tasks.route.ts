@@ -105,7 +105,7 @@ export const register = (router: Router) => {
 
   const taskPatchChangePriorityController = container.get('Apps.mooc.controllers.TaskPatchChangePriorityController');
   router.patch(
-    '/tasks/:id/changePriority',
+    '/:boardId/tasks/:id/changePriority',
     reqChangePrioritySchema,
     validateReqSchema,
     AuthMiddleware.validateJWT,

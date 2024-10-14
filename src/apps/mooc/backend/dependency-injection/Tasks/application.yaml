@@ -70,7 +70,8 @@ services:
 
   Mooc.Tasks.application.TaskChangerPriority:
     class: ../../../../../Contexts/Mooc/Tasks/application/ChangePriority/TaskChangerPriority
-    arguments: ['@Mooc.Tasks.domain.TaskRepository', '@Mooc.Shared.domain.EventBus']
+    arguments:
+      ['@Mooc.Boards.domain.BoardRepository', '@Mooc.Tasks.domain.TaskRepository', '@Mooc.Shared.domain.EventBus']
 
   Mooc.tasks.ChangePriorityTaskCommandHandler:
     class: ../../../../../Contexts/Mooc/Tasks/application/ChangePriority/ChangePriorityTaskCommandHandler
