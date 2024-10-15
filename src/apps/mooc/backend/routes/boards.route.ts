@@ -31,7 +31,7 @@ export const register = (router: Router) => {
   router.get(
     '/boards',
     cors({
-      origin: ['https://thullo.pages.dev', 'https://thullo.app'], // Opciones para permitir solo un origen específico
+      origin: ['http://localhost:5173', 'https://thullo.app'], // Opciones para permitir solo un origen específico
       methods: ['GET'], // Métodos permitidos
       allowedHeaders: ['Content-Type', 'Authorization'] // Encabezados permitidos,
     }),
