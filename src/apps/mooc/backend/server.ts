@@ -7,7 +7,7 @@ import helmet from 'helmet';
 import * as http from 'http';
 import httpStatus from 'http-status';
 import cookieParser from 'cookie-parser';
-import cors from 'cors';
+import cors, { CorsOptions } from 'cors';
 import { registerRoutes } from './routes';
 
 export class Server {
@@ -26,7 +26,22 @@ export class Server {
     this.express.use(helmet.frameguard({ action: 'deny' }));
     this.express.use(compress());
     this.express.use(cookieParser());
-    this.express.use(cors({ origin: ['https://thullo.pages.dev', 'https://thullo.app', 'http://localhost:5173'] }));
+
+    const allowedOrigins = ['https://thullo.pages.dev', 'https://thullo.app', 'http://localhost:5173'];
+
+    const corsOptions: CorsOptions = {
+      origin: function (origin, callback) {
+        // Permite solicitudes sin origen (como desde Postman) o si el origen está en la lista
+        if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+          callback(null, true);
+        } else {
+          callback(new Error('No permitido por CORS'));
+        }
+      },
+      credentials: true
+    };
+
+    this.express.use(cors(corsOptions));
     const router = Router();
     router.use(errorHandler());
     this.express.use(router);

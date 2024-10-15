@@ -30,11 +30,11 @@ export const register = (router: Router) => {
   const boardsGetSearchAllController = container.get('Apps.mooc.controllers.BoardGetSearchAllController');
   router.get(
     '/boards',
-    cors({
-      origin: ['http://localhost:5173', 'https://thullo.app'], // Opciones para permitir solo un origen específico
-      methods: ['GET'], // Métodos permitidos
-      allowedHeaders: ['Content-Type', 'Authorization'] // Encabezados permitidos,
-    }),
+    // cors({
+    //   origin: ['http://localhost:5173'], // Opciones para permitir solo un origen específico
+    //   methods: ['GET'], // Métodos permitidos
+    //   allowedHeaders: ['Content-Type', 'Authorization'] // Encabezados permitidos,
+    // }),
     AuthMiddleware.validateJWT,
     (req: Request, res: Response) => boardsGetSearchAllController.run(req, res)
   );

@@ -11,7 +11,7 @@ export class BoardGetSearchAllController implements Controller {
 
   async run(req: Request, res: Response) {
     try {
-      res.header('Access-Control-Allow-Origin', ['https://thullo.app', 'http://localhost:5173']);
+      //res.header('Access-Control-Allow-Origin', ['http://localhost:5173']);
       const { payload } = req.body; // get the bearer token
       const query = new SearchAllBoardsQuery(new UserId(payload.id.value));
       const boards = await this.queryBus.ask<BoardsResponse>(query);
