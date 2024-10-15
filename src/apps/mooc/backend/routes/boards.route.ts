@@ -3,7 +3,6 @@ import { body } from 'express-validator';
 import container from '../dependency-injection';
 import { validateReqSchema } from '.';
 import { AuthMiddleware } from '../middlewares/auth.middleware';
-import cors from 'cors';
 
 export const register = (router: Router) => {
   const reqSchema = [
