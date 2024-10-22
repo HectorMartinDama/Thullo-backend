@@ -17,6 +17,7 @@ import { TaskPriority } from './types/TaskPriority';
 import { TaskRemovedLabelDomainEvent } from './TaskRemovedLabelDomainEvent';
 import { TaskChangedPriorityDomainEvent } from './TaskChangedPriorityDomainEvent';
 import { TaskDeletedDomainEvent } from './TaskDeletedDomainEvent';
+import { TaskDeletedAttachmentDomainEvent } from './types/TaskDeletedAttachmentDomainEvent';
 
 export class Task extends AggregateRoot {
   readonly id: TaskId;
@@ -87,6 +88,10 @@ export class Task extends AggregateRoot {
 
   addAttachment(name: string, url: string, key: string) {
     this.record(new TaskAddedAttachmentDomainEvent({ aggregateId: this.id.value, name: name, url: url, key: key }));
+  }
+
+  deleteAttchament(userId: UserId, key: string) {
+    this.record(new TaskDeletedAttachmentDomainEvent({ aggregateId: this.id.value, userId: userId.value, key: key }));
   }
 
   updatePosition(listId: ListId, userId: UserId) {

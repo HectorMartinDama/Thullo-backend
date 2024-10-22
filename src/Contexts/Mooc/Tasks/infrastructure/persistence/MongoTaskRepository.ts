@@ -132,6 +132,11 @@ export class MongoTaskRepository extends MongoRepository<Task> implements TaskRe
     await collection.updateOne({ _id: id.value, user: userId.value }, { $pull: { labels: { _id: labelId } } });
   }
 
+  public async deleteAttachment(id: TaskId, key: string, userId: UserId): Promise<void> {
+    const collection = await this.collection();
+    await collection.updateOne({ _id: id.value, user: userId.value }, { $pull: { attachments: { name: key } } });
+  }
+
   public async addAttachment(id: TaskId, userId: UserId, name: string, url: string, key: string): Promise<void> {
     const collection = await this.collection();
     const filter = { _id: id.value };

@@ -16,6 +16,7 @@ export interface TaskRepository {
   removeLabel(id: TaskId, labelId: string, userId: UserId): Promise<void>;
   changePriority(id: TaskId, priority: number): Promise<void>;
   addAttachment(id: TaskId, userId: UserId, name: string, url: string, key: string): Promise<void>;
+  deleteAttachment(id: TaskId, key: string, userId: UserId): Promise<void>;
   updatePosition(tasksId: Array<TaskId>, userId: UserId, listId: ListId, id: TaskId): Promise<void>;
   deleteTask(id: TaskId): Promise<void>;
   deleteListTasks(userId: UserId, listId: ListId): Promise<void>;

@@ -105,6 +105,16 @@ services:
     class: ../../../../../Contexts/Mooc/Tasks/application/RemoveLabel/TaskRemoverLabel
     arguments: ['@Mooc.Tasks.domain.TaskRepository', '@Mooc.Shared.domain.EventBus']
 
+  Mooc.Tasks.application.TaskEliminatorAttachment:
+    class: ../../../../../Contexts/Mooc/Tasks/application/DeleteAttachment/TaskEliminatorAttachment
+    arguments: ['@Mooc.Tasks.domain.TaskRepository', '@Mooc.Shared.domain.EventBus']
+
+  Mooc.tasks.application.DeletedAttachmentTaskCommandHandler:
+    class: ../../../../../Contexts/Mooc/Tasks/application/DeleteAttachment/DeletedAttachmentTaskCommandHandler
+    arguments: ['@Mooc.Tasks.application.TaskEliminatorAttachment']
+    tags:
+      - { name: 'commandHandler' }
+
   Mooc.tasks.RemovedLabelTaskCommandHandler:
     class: ../../../../../Contexts/Mooc/Tasks/application/RemoveLabel/RemovedLabelTaskCommandHandler
     arguments: ['@Mooc.Tasks.application.TaskRemoverLabel']

@@ -91,6 +91,10 @@ services:
     class: ../../controllers/TaskDeleteController
     arguments: ['@Mooc.Shared.domain.CommandBus']
 
+  Apps.mooc.controllers.TaskDeleteAttachmentController:
+    class: ../../controllers/TaskDeleteAttachmentController
+    arguments: ['@Mooc.Shared.domain.CommandBus']
+
   Apps.mooc.controllers.TaskGetSearchByIdController:
     class: ../../controllers/TaskGetSearchByIdController
     arguments: ['@Mooc.Shared.domain.QueryBus']
