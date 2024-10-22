@@ -33,15 +33,52 @@ export class MongoListRepository extends MongoRepository<List> implements ListRe
     await collection.insertMany(objetosOrdenados);
   }
 
-  public async search(id: ListId, userId: UserId): Promise<Nullable<List>> {
+  public async search(id: ListId): Promise<Nullable<List>> {
     const collection = await this.collection();
-    const document = await collection.findOne<ListDocument>({ _id: id.value, user: userId.value });
+
+    const pipelineListTasks = [
+      {
+        $match: {
+          _id: id.value
+        }
+      },
+      {
+        $lookup: {
+          from: 'tasks',
+          localField: '_id', // Campo en la colección list
+          foreignField: 'list', // Campo en la colección user
+          as: 'tasks' // Nombre del nuevo campo con los datos de usuario
+        }
+      },
+      {
+        $unwind: '$tasks'
+      },
+      {
+        $group: {
+          _id: '$_id',
+          title: { $first: '$title' },
+          tasks: { $push: '$tasks' }
+        }
+      }
+    ];
+
+    const document = await collection.aggregate<ListDocument>(pipelineListTasks).next();
 
     return document
       ? List.fromPrimitives({
           ...document,
           id: document._id,
-          tasks: []
+          tasks: document.tasks.map(task =>
+            Task.fromPrimitives({
+              id: task._id,
+              title: task.title,
+              priority: task.priority,
+              createdAt: task.createdAt,
+              description: task.description,
+              labels: task.labels,
+              attachment: task.attachments
+            })
+          )
         })
       : null;
   }

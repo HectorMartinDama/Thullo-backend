@@ -11,6 +11,11 @@ export const register = (router: Router) => {
 
   const reqSchemaRenameTitle = [body('title').exists().isString()];
 
+  const listGetSearchByIdController = container.get('Apps.mooc.controllers.ListGetSearchByIdController');
+  router.get('/lists/:id', AuthMiddleware.validateJWT, (req: Request, res: Response) =>
+    listGetSearchByIdController.run(req, res)
+  );
+
   const listsPutController = container.get('Apps.mooc.controllers.ListPutController');
   router.put(
     '/lists/:boardId',

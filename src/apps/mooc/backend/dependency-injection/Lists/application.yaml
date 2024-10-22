@@ -8,6 +8,16 @@ services:
     arguments:
       ['@Mooc.Lists.domain.ListRepository', '@Mooc.Boards.domain.BoardRepository', '@Mooc.Shared.domain.EventBus']
 
+  Mooc.Lists.ListByIdFinder:
+    class: ../../../../../Contexts/Mooc/Lists/application/SearchById/ListByIdFinder
+    arguments: ['@Mooc.Lists.domain.ListRepository']
+
+  Mooc.Lists.SearchByIdListQueryHandler:
+    class: ../../../../../Contexts/Mooc/Lists/application/SearchById/SearchByIdListQueryHandler
+    arguments: ['@Mooc.Lists.ListByIdFinder']
+    tags:
+      - { name: 'queryHandler' }
+
   Mooc.lists.CreateListCommandHandler:
     class: ../../../../../Contexts/Mooc/Lists/application/Create/CreateListCommandHandler
     arguments: ['@Mooc.Lists.application.ListCreator']
