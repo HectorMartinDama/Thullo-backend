@@ -27,7 +27,64 @@ export class MongoTaskRepository extends MongoRepository<Task> implements TaskRe
 
   public async search(id: TaskId): Promise<Nullable<Task>> {
     const collection = await this.collection();
-    const document = await collection.findOne<TaskDocument>({ _id: id.value });
+
+    console.log('buscando task', id.value);
+
+    const pipelineTask = [
+      {
+        $match: {
+          _id: id.value // Filtra por el ID único de la tarea
+        }
+      },
+      {
+        $lookup: {
+          from: 'users', // Trae detalles del usuario que creó la tarea
+          localField: 'user',
+          foreignField: '_id',
+          as: 'userDetails'
+        }
+      },
+      {
+        $unwind: {
+          // Desenrolla el array de attachments para procesarlos individualmente
+          path: '$attachments',
+          preserveNullAndEmptyArrays: true // En caso de que no haya attachments, se preserva el array vacío
+        }
+      },
+      {
+        $lookup: {
+          // Trae los detalles del usuario que subió cada attachment
+          from: 'users',
+          localField: 'attachments.user', // Supongo que cada attachment tiene un campo 'uploadedBy' que referencia al usuario
+          foreignField: '_id',
+          as: 'attachments.user'
+        }
+      },
+      {
+        $unwind: {
+          // Desenrolla el resultado de 'attachments.userDetails' para aplanarlo
+          path: '$attachments.user',
+          preserveNullAndEmptyArrays: true // Si no hay detalles del usuario, preserva el array vacío
+        }
+      },
+      {
+        $group: {
+          // Agrupamos nuevamente para reconstruir el array de attachments
+          _id: '$_id',
+          title: { $first: '$title' },
+          createdAt: { $first: '$createdAt' },
+          priority: { $first: '$priority' },
+          description: { $first: '$description' },
+          cover: { $first: '$cover' },
+          labels: { $first: '$labels' },
+          user: { $first: '$userDetails' }, // Mantén los detalles del usuario que creó la tarea
+          attachments: { $push: '$attachments' } // Reconstruye el array de attachments con los detalles del usuario
+        }
+      },
+      { $limit: 1 } // Limita el resultado a un documento
+    ];
+
+    const document = await collection.aggregate<TaskDocument>(pipelineTask).next();
 
     return document
       ? Task.fromPrimitives({
@@ -77,8 +134,8 @@ export class MongoTaskRepository extends MongoRepository<Task> implements TaskRe
 
   public async addAttachment(id: TaskId, userId: UserId, name: string, url: string, key: string): Promise<void> {
     const collection = await this.collection();
-    const filter = { _id: id.value, user: userId.value };
-    const document = { name, url, key, createdAt: new Date() };
+    const filter = { _id: id.value };
+    const document = { name, url, user: userId.value, key, createdAt: new Date() };
 
     const updateDocument = { $push: { attachments: document } };
     await collection.updateOne(filter, updateDocument);
