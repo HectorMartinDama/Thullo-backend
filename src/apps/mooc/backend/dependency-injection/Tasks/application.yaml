@@ -64,6 +64,16 @@ services:
     tags:
       - { name: 'commandHandler' }
 
+  Mooc.Tasks.application.TaskAdderDueDate:
+    class: ../../../../../Contexts/Mooc/Tasks/application/AddDueDate/TaskAdderDueDate
+    arguments: ['@Mooc.Tasks.domain.TaskRepository', '@Mooc.Shared.domain.EventBus']
+
+  Mooc.tasks.AddedDueDateTaskCommandHandler:
+    class: ../../../../../Contexts/Mooc/Tasks/application/AddDueDate/AddedDueDateTaskCommandHandler
+    arguments: ['@Mooc.Tasks.application.TaskAdderDueDate']
+    tags:
+      - { name: 'commandHandler' }
+
   Mooc.Tasks.application.TaskRenamerTitle:
     class: ../../../../../Contexts/Mooc/Tasks/application/Rename/TaskRenamerTitle
     arguments: ['@Mooc.Tasks.domain.TaskRepository', '@Mooc.Shared.domain.EventBus']

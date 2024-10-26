@@ -20,6 +20,8 @@ export const register = (router: Router) => {
 
   const reqAddLabelSchema = [body('title').exists().isString()];
 
+  const reqAddDueDateSchema = [body('date').exists().isString()];
+
   const reqAddAttachmentSchema = [body('url').exists().isString(), body('name').exists().isString()];
 
   const reqUpdatePositionSchema = [body('tasksId').exists().isArray()];
@@ -49,6 +51,15 @@ export const register = (router: Router) => {
     validateReqSchema,
     AuthMiddleware.validateJWT,
     (req: Request, res: Response) => tasksPatchAddCoverController.run(req, res)
+  );
+
+  const tasksPatchAddDueDateController = container.get('Apps.mooc.controllers.TaskPatchAddDueDateController');
+  router.patch(
+    '/tasks/addDueDate/:id',
+    reqAddDueDateSchema,
+    validateReqSchema,
+    AuthMiddleware.validateJWT,
+    (req: Request, res: Response) => tasksPatchAddDueDateController.run(req, res)
   );
 
   const tasksPatchAddLabelController = container.get('Apps.mooc.controllers.TaskPatchAddLabelController');

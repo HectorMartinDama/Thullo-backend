@@ -13,6 +13,7 @@ export interface TaskRepository {
   addDescription(userId: UserId, id: TaskId, description: string): Promise<void>;
   addCover(userId: UserId, id: TaskId, cover: string): Promise<void>;
   addLabel(id: TaskId, userId: UserId, title: string): Promise<void>;
+  addDueDate(id: TaskId, userId: UserId, date: string): Promise<void>;
   removeLabel(id: TaskId, labelId: string, userId: UserId): Promise<void>;
   changePriority(id: TaskId, priority: number): Promise<void>;
   addAttachment(id: TaskId, userId: UserId, name: string, url: string, key: string): Promise<void>;

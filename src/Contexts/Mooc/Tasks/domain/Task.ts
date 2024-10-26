@@ -18,12 +18,16 @@ import { TaskRemovedLabelDomainEvent } from './TaskRemovedLabelDomainEvent';
 import { TaskChangedPriorityDomainEvent } from './TaskChangedPriorityDomainEvent';
 import { TaskDeletedDomainEvent } from './TaskDeletedDomainEvent';
 import { TaskDeletedAttachmentDomainEvent } from './types/TaskDeletedAttachmentDomainEvent';
+import { TaskAddedDueDateDomainEvent } from './TaskAddedDueDateDomainEvent';
+import { User } from '../../Users/domain/User';
 
 export class Task extends AggregateRoot {
   readonly id: TaskId;
   readonly title: TaskTitle;
   readonly priority: TaskPriority;
   readonly createdAt: Date;
+  readonly user?: User;
+  readonly dueDate?: string;
   readonly description?: TaskDescription;
   readonly cover?: TaskCover;
   readonly labels?: Array<Object>;
@@ -34,6 +38,8 @@ export class Task extends AggregateRoot {
     title: TaskTitle,
     priority: TaskPriority,
     createdAt: Date,
+    user?: User,
+    dueDate?: string,
     description?: TaskDescription,
     cover?: TaskCover,
     labels?: Array<Object>,
@@ -44,6 +50,8 @@ export class Task extends AggregateRoot {
     this.title = title;
     this.priority = priority;
     this.createdAt = createdAt;
+    this.user = user;
+    this.dueDate = dueDate;
     this.description = description;
     this.cover = cover;
     this.labels = labels;
@@ -90,6 +98,10 @@ export class Task extends AggregateRoot {
     this.record(new TaskAddedAttachmentDomainEvent({ aggregateId: this.id.value, name: name, url: url, key: key }));
   }
 
+  addDueDate(date: string) {
+    this.record(new TaskAddedDueDateDomainEvent({ aggregateId: this.id.value, date }));
+  }
+
   deleteAttchament(userId: UserId, key: string) {
     this.record(new TaskDeletedAttachmentDomainEvent({ aggregateId: this.id.value, userId: userId.value, key: key }));
   }
@@ -109,21 +121,36 @@ export class Task extends AggregateRoot {
     title: string;
     priority: number;
     createdAt: Date;
+    user?: User;
+    dueDate?: string;
     description?: string;
     cover?: string;
     labels?: Array<Object>;
     attachment?: Array<Attachament>;
   }): Task {
-    const { id, title, priority, createdAt, description, cover, labels, attachment } = plainData;
+    const { id, title, priority, createdAt, user, dueDate, description, cover, labels, attachment } = plainData;
 
     const taskId = new TaskId(id);
     const taskTitle = new TaskTitle(title);
     const taskPriority = new TaskPriority(priority);
     const taskCreatedAt = createdAt;
+    const taskUser = user ? new User(user) : undefined;
+    const taskDueDate = dueDate ? plainData.dueDate : undefined;
     const taskDescription = description ? new TaskDescription(description) : undefined;
     const taskCover = cover ? new TaskCover(cover) : undefined;
 
-    return new Task(taskId, taskTitle, taskPriority, taskCreatedAt, taskDescription, taskCover, labels, attachment);
+    return new Task(
+      taskId,
+      taskTitle,
+      taskPriority,
+      taskCreatedAt,
+      taskUser,
+      taskDueDate,
+      taskDescription,
+      taskCover,
+      labels,
+      attachment
+    );
   }
 
   toPrimitives(): any {
@@ -132,6 +159,8 @@ export class Task extends AggregateRoot {
       title: this.title.value,
       priority: this.priority,
       createdAt: this.createdAt,
+      user: this.user?.toPrimitives(),
+      dueDate: this.dueDate,
       description: this.description?.value,
       cover: this.cover?.value,
       labels: this.labels,

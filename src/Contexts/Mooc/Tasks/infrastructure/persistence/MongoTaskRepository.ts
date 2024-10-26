@@ -7,6 +7,8 @@ import { TaskId } from '../../domain/types/TaskId';
 import { Nullable } from '../../../../Shared/domain/Nullable';
 import { Attachament } from '../../domain/types/TaskAttachment';
 import { Uuid } from '../../../../Shared/domain/value-object/Uuid';
+import { User } from '../../../Users/domain/User';
+import { UserDocument } from '../../../Users/infrastructure/persistence/MongoUserRepository';
 
 export interface TaskDocument {
   _id: string;
@@ -14,7 +16,8 @@ export interface TaskDocument {
   priority: number;
   description?: string;
   createdAt: Date;
-  dueDate?: Date;
+  user: UserDocument;
+  dueDate?: string;
   cover?: string;
   labels?: Array<Object>;
   attachments?: Array<Attachament>;
@@ -28,8 +31,6 @@ export class MongoTaskRepository extends MongoRepository<Task> implements TaskRe
   public async search(id: TaskId): Promise<Nullable<Task>> {
     const collection = await this.collection();
 
-    console.log('buscando task', id.value);
-
     const pipelineTask = [
       {
         $match: {
@@ -42,6 +43,12 @@ export class MongoTaskRepository extends MongoRepository<Task> implements TaskRe
           localField: 'user',
           foreignField: '_id',
           as: 'userDetails'
+        }
+      },
+      {
+        $unwind: {
+          path: '$userDetails', // Desenrolla para tener userDetails como objeto
+          preserveNullAndEmptyArrays: true // En caso de que no haya detalles, preserva el campo vacío
         }
       },
       {
@@ -74,10 +81,11 @@ export class MongoTaskRepository extends MongoRepository<Task> implements TaskRe
           title: { $first: '$title' },
           createdAt: { $first: '$createdAt' },
           priority: { $first: '$priority' },
+          dueDate: { $first: '$dueDate' },
           description: { $first: '$description' },
           cover: { $first: '$cover' },
           labels: { $first: '$labels' },
-          user: { $first: '$userDetails' }, // Mantén los detalles del usuario que creó la tarea
+          user: { $first: '$userDetails' }, // userDetails ahora será un objeto, no un array
           attachments: { $push: '$attachments' } // Reconstruye el array de attachments con los detalles del usuario
         }
       },
@@ -86,12 +94,21 @@ export class MongoTaskRepository extends MongoRepository<Task> implements TaskRe
 
     const document = await collection.aggregate<TaskDocument>(pipelineTask).next();
 
+    console.log('document', document);
+
     return document
       ? Task.fromPrimitives({
           id: document._id,
           title: document.title,
           createdAt: document.createdAt,
           priority: document.priority,
+          user: User.fromPrimitives({
+            id: document.user?._id,
+            name: document.user?.name,
+            email: document.user?.email,
+            image: document.user?.image
+          }),
+          dueDate: document.dueDate,
           description: document.description,
           cover: document.cover,
           labels: document.labels,
@@ -124,6 +141,13 @@ export class MongoTaskRepository extends MongoRepository<Task> implements TaskRe
     const filter = { _id: id.value, user: userId.value };
     const document = { title, _id: Uuid.random().value };
     const updateDocument = { $push: { labels: document } };
+    await collection.updateOne(filter, updateDocument);
+  }
+
+  public async addDueDate(id: TaskId, userId: UserId, date: string): Promise<void> {
+    const collection = await this.collection();
+    const filter = { _id: id.value, user: userId.value };
+    const updateDocument = { $set: { dueDate: date } };
     await collection.updateOne(filter, updateDocument);
   }
 
