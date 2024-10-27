@@ -145,6 +145,7 @@ export class MongoTaskRepository extends MongoRepository<Task> implements TaskRe
   }
 
   public async addDueDate(id: TaskId, userId: UserId, date: string): Promise<void> {
+    console.log('add due date');
     const collection = await this.collection();
     const filter = { _id: id.value, user: userId.value };
     const updateDocument = { $set: { dueDate: date } };
